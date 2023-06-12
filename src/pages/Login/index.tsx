@@ -1,11 +1,17 @@
-import React from "react";
-import { VStack, Text } from "native-base";
+import React, { useState } from "react";
+import { VStack, Text, Box, Link } from "native-base";
+import { TouchableOpacity } from "react-native";
 import LottieView from 'lottie-react-native'
 
-export default function Login() {
+import { Titulo } from "../../components/Titulo";
+import { InputTexto } from "../../components/InputTexto";
+import { Botao } from "../../components/Botao";
 
+export default function Login({navigation}: any) {
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
     return (
-        <VStack flex={1} alignItems="center" p={5}>
+        <VStack flex={1} alignItems="center" justifyContent='center' p={5}>
             <LottieView 
                 source={require('../../assets/dog-academy.json')}
                 autoPlay={true}
@@ -15,7 +21,25 @@ export default function Login() {
                 }}
                 loop={true}
             />
-            <Text>Esta é a tela de Login</Text>
+            <Titulo>Faça Login em sua Conta</Titulo>
+            <Box>
+                <InputTexto placeholder="Insira seu E-mail" label='E-mail' value={email} onChangeText={setEmail} />
+                <InputTexto placeholder="Insira sua Senha" label='Senha' value={senha} onChangeText={setSenha} secureTextEntry={true} />
+            </Box>
+            <Botao>Entrar</Botao>
+            
+            <Link href='https://www.alura.com.br' mt={2}>
+                Esqueceu sua senha?
+            </Link>
+
+            <Box w='100%' flexDirection='row' justifyContent='center' mt={8}>
+                <Text>Ainda não tem cadastro? </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Cadastro')} >
+                <Text color='blue.500'> 
+                    Faça seu cadastro!
+                </Text>
+                </TouchableOpacity>
+            </Box>
         </VStack>
     )
 }
