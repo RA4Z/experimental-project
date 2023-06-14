@@ -6,6 +6,7 @@ const Tab = createNativeStackNavigator();
 
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
+import RecuperarSenha from './pages/RecuperarSenha';
 
 export default function Routes() {
     return (
@@ -13,6 +14,7 @@ export default function Routes() {
             <Tab.Navigator>
                 <Tab.Screen name='Login' component={Login as React.FC} options={{headerShown:false}} />
                 <Tab.Screen name='Cadastro' component={Cadastro as React.FC} options={{headerShown:false}} />
+                <Tab.Screen name='RecuperarSenha' component={RecuperarSenha as React.FC} options={{headerShown:false}} />
             </Tab.Navigator>
         </NavigationContainer>
     )

@@ -37,7 +37,7 @@ export default function Cadastro({navigation}: any) {
     return (
         <VStack flex={1} alignItems="center" justifyContent='flex-start' p={5}>
             {secao == 0 && <>
-                <Logo height={200} width={200} />
+                <Logo height={150} width={150} />
                 <Titulo>Por favor, nos diga como podemos lhe chamar...</Titulo>
                 <InputTexto placeholder='Nome de usuário' value={username} onChangeText={setUsername}  /> 
             </>}
