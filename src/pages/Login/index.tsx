@@ -10,6 +10,9 @@ import Logo from "../../components/Logo";
 export default function Login({navigation}: any) {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    function entrar() {
+        navigation.navigate('Tabs')
+    }
     return (
         <VStack flex={1} alignItems="center" justifyContent='center' p={5}>
             <Logo width={150} height={150} />
@@ -18,7 +21,7 @@ export default function Login({navigation}: any) {
                 <InputTexto placeholder="Insira seu E-mail" label='E-mail' value={email} onChangeText={setEmail} />
                 <InputTexto placeholder="Insira sua Senha" label='Senha' value={senha} onChangeText={setSenha} secureTextEntry={true} />
             </Box>
-            <Botao>Entrar</Botao>
+            <Botao onPress={entrar}>Entrar</Botao>
             <TouchableOpacity onPress={() => navigation.navigate('RecuperarSenha')}>
                 <Text mt={2} color='blue.800'> 
                     Esqueci minha senha
