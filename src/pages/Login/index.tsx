@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { VStack, Text, Box, Link } from "native-base";
+import { VStack, Text, Box } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import { Titulo } from "../../components/Titulo";

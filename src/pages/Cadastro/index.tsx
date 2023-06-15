@@ -19,7 +19,9 @@ export default function Cadastro({navigation}: any) {
             toast.show({
               title: 'Nome de usuário em branco', 
               description: 'O nome de usuário não pode estar em branco!', 
-              backgroundColor: 'red.500'
+              backgroundColor: 'red.500',
+              marginRight: 5,
+              marginLeft: 5
             })
             return
         }
