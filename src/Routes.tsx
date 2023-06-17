@@ -6,9 +6,11 @@ const Tab = createNativeStackNavigator();
 
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
-import Configuracoes from './pages/Configuracoes';
 import RecuperarSenha from './pages/RecuperarSenha';
+
 import Tabs from './pages/Tabs';
+import Exercicio from './pages/Tabs/Explorar/Exercicio';
+import Configuracoes from './pages/Configuracoes';
 
 export default function Routes() {
     return (
@@ -17,8 +19,10 @@ export default function Routes() {
                 <Tab.Screen name='Login' component={Login as React.FC} options={{headerShown:false}} />
                 <Tab.Screen name='Cadastro' component={Cadastro as React.FC} options={{headerShown:false}} />
                 <Tab.Screen name='RecuperarSenha' component={RecuperarSenha as React.FC} options={{headerShown:false}} />
+
                 <Tab.Screen name='Tabs' component={Tabs as React.FC} options={{headerShown:false}} />
                 <Tab.Screen name='Configuracoes' component={Configuracoes as React.FC} options={{headerShown:false}} />
+                <Tab.Screen name='Exercicio' component={Exercicio as React.FC} options={{headerShown:false}} />
             </Tab.Navigator>
         </NavigationContainer>
     )
