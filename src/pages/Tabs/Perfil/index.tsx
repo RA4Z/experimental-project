@@ -11,25 +11,34 @@ import SetaDireitaIMG from './assets/seta-direita.png'
 import AlunosIMG from './assets/alunos.png'
 import CalendarioIMG from './assets/calendario.png'
 import HistoricoIMG from './assets/historico.png'
+import ConfiguracoesIMG from './assets/configuracoes.png'
+import LojaIMG from './assets/loja.png'
+import PremiumIMG from '../../../assets/premium.png' 
 
 export default function Perfil() {
     const [role, setRole] = useState('Professor')
     const [genero, setGenero] = useState('Masculino')
+    const [premium, setPremium] = useState(true)
     const [cargo, setCargo] = useState(role)
 
     useEffect(() => {
-        if(genero != 'Masculino') {
+        if(genero != 'Masculino' && genero != 'Outro') {
             if(role == 'Professor') setCargo('Professora')
             if(role == 'Aluno') setCargo('Aluna')
         }
     },[genero])
+
     return (
         <VStack flex={1} justifyContent='flex-start' alignItems='center'>
             <Titulo fontSize='lg'>Robert Aron Zimmermann</Titulo>
+           
             <Avatar size={150} source={{ uri: 'https://github.com/RA4Z.png' }} mt={5} />
+            {premium == true && <Image source={PremiumIMG} mt={-5} w={35} h={35} alt="Premium" /> }
 
-            <Box flexDirection='row' backgroundColor='blue.800' mt={5} w='100%' h={50} justifyContent='space-around' alignItems='center' >
+            <Box flexDirection='row' backgroundColor='blue.800' mt={5} w='100%' h={50}  justifyContent='space-around' alignItems='center' >
+                <TouchableOpacity><Image opacity={0} source={LojaIMG} w={35} h={35} alt="Loja" /></TouchableOpacity>
                 <Text color="white" fontWeight="bold" fontSize='md'>{cargo}</Text>
+                <TouchableOpacity><Image source={ConfiguracoesIMG} w={35} h={35} alt="Configurações" /></TouchableOpacity>
             </Box>
             <ScrollView backgroundColor='#05668d' height='100%' w='100%'>
                 <Box flex={1} p={5}>
