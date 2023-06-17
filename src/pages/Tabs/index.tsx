@@ -3,15 +3,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Home from "./Home";
 import Perfil from "./Perfil";
+import Explorar from './Explorar'
 
 const Tab = createBottomTabNavigator()
-const screenOptions={
+const screenOptions = {
     tabBarStyle: {
-            backgroundColor: '#002851'
-        },
-        tabBarActiveTintColor: '#339CFF',
-        tabBarInactiveTintColor: '#FFF'
-    }
+        backgroundColor: '#002851'
+    },
+    tabBarActiveTintColor: '#339CFF',
+    tabBarInactiveTintColor: '#FFF'
+}
 
 const tabs = [
     {
@@ -20,21 +21,27 @@ const tabs = [
         icon: 'home'
     },
     {
+        name: 'Explorar',
+        component: Explorar,
+        icon: 'search'
+    },
+    {
         name: 'Perfil',
         component: Perfil,
         icon: 'person'
-    },
-
+    }
 ]
 
-export default function Tabs(){ 
+export default function Tabs() {
     return (
         <Tab.Navigator screenOptions={screenOptions} >
             {tabs.map((tab) => (
                 <Tab.Screen key={tab.name} name={tab.name} component={tab.component}
-                options={{headerShown: false, tabBarIcon: ({ color, size }) => (<Ionicons 
-                name={tab.icon} color={color} size={size} />)}} />
-            )) }
+                    options={{
+                        headerShown: false, tabBarIcon: ({ color, size }) => (<Ionicons
+                            name={tab.icon} color={color} size={size} />)
+                    }} />
+            ))}
         </Tab.Navigator>
     )
 }
