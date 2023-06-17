@@ -34,6 +34,13 @@ const secoes = [
           placeholder: 'Insira sua senha',
           secureTextEntry: true,
           name: 'confirmaSenha'
+        },
+        {
+          id: 6,
+          label: 'Gênero',
+          placeholder: 'Selecione seu Gênero',
+          tipoInput: 'Select',
+          name: 'genero'
         }
       ]
     }
