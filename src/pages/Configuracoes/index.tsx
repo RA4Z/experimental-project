@@ -6,9 +6,6 @@ import { CommonActions } from '@react-navigation/native';
 import Cabecalho from "../../components/Cabecalho";
 
 export default function Configuracoes({navigation}: any) {
-    function voltarTela() {
-        navigation.goBack()
-    }
     function deslogar() {
         navigation.dispatch(
           CommonActions.reset({
