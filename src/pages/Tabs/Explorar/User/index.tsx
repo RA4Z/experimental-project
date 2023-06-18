@@ -1,10 +1,10 @@
-import { VStack } from "native-base";
-import { Titulo } from "../../../../components/Titulo";
+import Cabecalho from "../../../../components/Cabecalho";
 
-export default function User() {
+export default function User({ navigation, route}: any) {
+    const item = route?.params?.usuario
     return (
-        <VStack>
-            <Titulo>Usuário</Titulo>
-        </VStack>
+        <>
+            <Cabecalho texto={item.name} navigation={navigation} />
+        </>
     )
 }

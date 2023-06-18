@@ -1,18 +1,13 @@
-import { VStack, Text, Divider, Image } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { VStack, Text, Divider } from "native-base";
 
 import { Titulo } from "../../../../components/Titulo";
-import VoltarIMG from '../../../../assets/voltar.png';
+import Cabecalho from "../../../../components/Cabecalho";
 
 export default function Exercicio({ navigation, route }: any) {
     const item = route?.params?.exercicio
     return (
         <>
-            <VStack flexDir='row' p={5} justifyContent='space-around' alignItems='center'>
-                <TouchableOpacity onPress={() => navigation.goBack()}><Image source={VoltarIMG} mt={5} w={50} h={50} alt="Voltar" /></TouchableOpacity>
-                <Titulo>{item.name}</Titulo>
-                <Image opacity={0} source={VoltarIMG} mt={5} w={50} h={50} alt="Voltar" />
-            </VStack>
+            <Cabecalho texto={item.name} navigation={navigation} />
             <VStack alignItems='center' p={5}>
                 <Titulo fontSize='md'>{item.description}</Titulo>
                 <Divider mt={5} />

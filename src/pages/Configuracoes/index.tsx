@@ -1,9 +1,9 @@
-import { Box, VStack, Divider, Image, ScrollView } from "native-base"
+import { Box, Divider, ScrollView } from "native-base"
 import { Titulo } from "../../components/Titulo"
 import { TouchableOpacity } from "react-native"
 import { CommonActions } from '@react-navigation/native';
 
-import VoltarIMG from '../../assets/voltar.png'
+import Cabecalho from "../../components/Cabecalho";
 
 export default function Configuracoes({navigation}: any) {
     function voltarTela() {
@@ -19,12 +19,7 @@ export default function Configuracoes({navigation}: any) {
       }
     return (
         <ScrollView flex={1}>
-            <VStack flexDir='row' p={5} alignItems='center' justifyContent='space-around'>
-                <TouchableOpacity onPress={() => voltarTela()}><Image source={VoltarIMG} mt={5} w={50} h={50} alt="Voltar" /></TouchableOpacity>
-                <Titulo color='blue.500'>Configurações</Titulo>
-                <Image opacity={0} source={VoltarIMG} mt={5} w={50} h={50} alt="Voltar" />
-            </VStack>
-            
+            <Cabecalho texto='Configurações' navigation={navigation} />
             <Box>
                 <TouchableOpacity><Titulo fontSize='md'>Sobre nós</Titulo></TouchableOpacity>
             </Box>
