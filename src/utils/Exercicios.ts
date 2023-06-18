@@ -56,7 +56,7 @@ const exercicios = [
     },
     {
         id: 6,
-        name: 'Abdômen inclinado',
+        name: 'Abdominal inclinado',
         description: 'Levantar com a força do abdômen',
         muscle: 'Abdômen central',
         member: 'Abdômen',
