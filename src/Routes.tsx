@@ -11,6 +11,7 @@ import RecuperarSenha from './pages/RecuperarSenha';
 import Tabs from './pages/Tabs';
 import Exercicio from './pages/Tabs/Explorar/Exercicio';
 import Configuracoes from './pages/Configuracoes';
+import User from './pages/Tabs/Explorar/User';
 
 export default function Routes() {
     return (
@@ -23,6 +24,7 @@ export default function Routes() {
                 <Tab.Screen name='Tabs' component={Tabs as React.FC} options={{headerShown:false}} />
                 <Tab.Screen name='Configuracoes' component={Configuracoes as React.FC} options={{headerShown:false}} />
                 <Tab.Screen name='Exercicio' component={Exercicio as React.FC} options={{headerShown:false}} />
+                <Tab.Screen name='User' component={User as React.FC} options={{headerShown:false}} />
             </Tab.Navigator>
         </NavigationContainer>
     )

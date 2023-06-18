@@ -4,8 +4,12 @@ import { useState } from 'react';
 import { Botao } from "../../../components/Botao";
 import { InputTexto } from "../../../components/InputTexto";
 import CardPesquisa from "../../../components/CardPesquisa";
-import ImagemBarra from './assets/barra.png';
+
+import IconeHomem from '../../../assets/homem.png';
+import IconeMulher from '../../../assets/mulher.png';
+
 import { exercicios } from "../../../utils/Exercicios";
+import { usuarios } from "../../../utils/Usuarios";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('')
@@ -15,7 +19,6 @@ export default function Explorar({ navigation }: any) {
     const [estado, setEstado] = useState('')
     const [membro, setMembro] = useState('')
     const [musculo, setMusculo] = useState('')
-
 
     return (
         <ScrollView p={5}>
@@ -75,7 +78,7 @@ export default function Explorar({ navigation }: any) {
                     <Divider mt={5} />
 
                     <VStack>
-                        {exercicios?.map(exercicio => {
+                        {filtro == 'Exercício' && exercicios?.map(exercicio => {
                         return (
                             <CardPesquisa 
                                 name= {exercicio.name} 
@@ -83,6 +86,17 @@ export default function Explorar({ navigation }: any) {
                                 image={exercicio.image} 
                                 description={exercicio.description} 
                                 action={() => navigation.navigate('Exercicio', {exercicio})} />
+                        )})}
+
+                        {filtro == 'Usuário' && usuarios?.map(usuario => {
+                        return (
+                            <CardPesquisa 
+                                name= {usuario.name} 
+                                key={usuario.id}
+                                image={usuario.linkImagem == '' ? (usuario.genero == 'Masculino' ? IconeHomem : IconeMulher) : usuario.linkImagem} 
+                                imageWeb={usuario.linkImagem == '' ? false : true}
+                                description={usuario.genero} 
+                                action={() => navigation.navigate('User', {usuario})} />
                         )})}
                     </VStack>
                 </>
