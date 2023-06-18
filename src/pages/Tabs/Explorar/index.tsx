@@ -5,6 +5,7 @@ import { Botao } from "../../../components/Botao";
 import { InputTexto } from "../../../components/InputTexto";
 import CardPesquisa from "../../../components/CardPesquisa";
 import ImagemBarra from './assets/barra.png';
+import { exercicios } from "../../../utils/Exercicios";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('')
@@ -74,9 +75,15 @@ export default function Explorar({ navigation }: any) {
                     <Divider mt={5} />
 
                     <VStack>
-                        <CardPesquisa name='Exercício x' image={ImagemBarra} description='Descrição simples 1' action={() => navigation.navigate('Exercicio', { filtro, nome })} />
-                        <CardPesquisa name='Exercício y' image={ImagemBarra} description='Descrição simples 2' action={() => navigation.navigate('Exercicio')} />
-                        <CardPesquisa name='Exercício z' image={ImagemBarra} description='Descrição simples 3' action={() => navigation.navigate('Exercicio')} />
+                        {exercicios?.map(exercicio => {
+                        return (
+                            <CardPesquisa 
+                                name= {exercicio.name} 
+                                key={exercicio.id}
+                                image={exercicio.image} 
+                                description={exercicio.description} 
+                                action={() => navigation.navigate('Exercicio', {exercicio})} />
+                        )})}
                     </VStack>
                 </>
                 }
