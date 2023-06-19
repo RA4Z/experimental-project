@@ -1,5 +1,8 @@
 import { Box, Divider, Image, Text, Avatar } from "native-base";
-import { ImageSourcePropType, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
+import Animated, {
+    FadeInDown
+  } from 'react-native-reanimated';
 import { Titulo } from "../Titulo";
 import { useState } from 'react';
 
@@ -14,7 +17,7 @@ interface CardProps {
 export default function CardPesquisa({action, ...rest}: CardProps) {
     const [mostrarDescricao, setMostrarDescricao] = useState(false);
     return (
-        <>
+        <Animated.View entering={FadeInDown}>
             <TouchableOpacity
                 onPress={() => setMostrarDescricao(!mostrarDescricao)}
                 onLongPress={action}>
@@ -30,6 +33,6 @@ export default function CardPesquisa({action, ...rest}: CardProps) {
                 </Box>
             </TouchableOpacity>
             <Divider mt={5} />
-        </>
+        </Animated.View>
     )
 }

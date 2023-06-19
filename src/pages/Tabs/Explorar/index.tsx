@@ -70,7 +70,7 @@ export default function Explorar({ navigation }: any) {
                     <Select.Item label="Usuários" value="Usuário" />
                 </Select>
             </FormControl>
-
+            
             <VStack p={5}>
                 {(filtro == 'Alongamento' || filtro == 'Exercício') && <>
                     <InputTexto
