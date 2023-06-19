@@ -132,7 +132,7 @@ export default function Explorar({ navigation }: any) {
                                 key={usuario.id}
                                 image={usuario.linkImagem == '' ? (usuario.genero == 'Masculino' ? IconeHomem : IconeMulher) : usuario.linkImagem} 
                                 imageWeb={usuario.linkImagem == '' ? false : true}
-                                description={usuario.genero} 
+                                description={usuario.cargo} 
                                 action={() => navigation.navigate('User', {usuario})} />
                         )})}
                     </VStack>
