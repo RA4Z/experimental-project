@@ -10,6 +10,7 @@ import IconeMulher from '../../../assets/mulher.png';
 
 import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
+import { Titulo } from "../../../components/Titulo";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('')
@@ -17,9 +18,43 @@ export default function Explorar({ navigation }: any) {
     const [nome, setNome] = useState('')
     const [cidade, setCidade] = useState('')
     const [estado, setEstado] = useState('')
+
     const [membro, setMembro] = useState('')
     const [musculo, setMusculo] = useState('')
 
+    const [pesquisado, setPesquisado] = useState(false)
+
+    const [lista, setLista] = useState(exercicios)
+    const [users, setUsers] = useState(usuarios)
+
+    function selecionarFiltro(filtro:string) {
+        setPesquisado(false)
+        setFiltro(filtro)
+    }
+
+    function pesquisar() {
+        if(filtro == 'Exercício' || filtro == 'Alongamento') {
+            setLista(exercicios)
+            setUsers([])
+            if(membro != '') {
+                setLista(lista.filter(exercicio => exercicio.member.includes(`${membro}`)))
+            }
+            if(musculo != '') {
+                setLista(lista.filter(exercicio => exercicio.muscle.includes(`${musculo}`)))
+            }
+            if(nome != '') {
+                setLista(lista.filter(exercicio => exercicio.name.includes(`${nome}`)))
+            }
+        }
+        if(filtro == 'Usuário') {
+            setUsers(usuarios)
+            setLista([])
+            if(nome != '') {
+                setUsers(users.filter(usuario => usuario.name.includes(`${nome}`)))
+            }
+        }
+        setPesquisado(true)
+    }
     return (
         <ScrollView p={5}>
             <FormControl alignItems='center' mt={5}>
@@ -28,7 +63,7 @@ export default function Explorar({ navigation }: any) {
                     placeholder='Selecionar Filtro'
                     selectedValue={filtro}
                     width={200}
-                    onValueChange={(itemValue: string) => setFiltro(itemValue)}
+                    onValueChange={(itemValue: string) => selecionarFiltro(itemValue)}
                 >
                     <Select.Item label="Exercícios" value="Exercício" />
                     <Select.Item label="Alongamentos" value="Alongamento" />
@@ -74,11 +109,13 @@ export default function Explorar({ navigation }: any) {
                     value={nome}
                     onChangeText={(text) => setNome(text)}
                 />
-                    <Botao>Pesquisar</Botao>
+                    <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
                     <Divider mt={5} />
 
                     <VStack>
-                        {filtro == 'Exercício' && exercicios?.map(exercicio => {
+                        {(lista.length == 0 && users.length == 0  && pesquisado == true) && <Titulo>Nada encontrado</Titulo>}
+
+                        {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
                         return (
                             <CardPesquisa 
                                 name= {exercicio.name} 
@@ -88,7 +125,7 @@ export default function Explorar({ navigation }: any) {
                                 action={() => navigation.navigate('Exercicio', {exercicio})} />
                         )})}
 
-                        {filtro == 'Usuário' && usuarios?.map(usuario => {
+                        {(filtro == 'Usuário' && pesquisado == true) && users?.map(usuario => {
                         return (
                             <CardPesquisa 
                                 name= {usuario.name} 
