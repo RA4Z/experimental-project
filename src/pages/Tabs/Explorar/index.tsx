@@ -17,10 +17,10 @@ import IconeMulher from '../../../assets/mulher.png';
 import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
 import { Titulo } from "../../../components/Titulo";
+import { styles } from "./styles";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('')
-    const [mostrar, setMostrar] = useState(false);
 
     const [nome, setNome] = useState('')
     const [cidade, setCidade] = useState('')
@@ -68,19 +68,16 @@ export default function Explorar({ navigation }: any) {
         apertarBotao();
     }
     const minHeight = useSharedValue(0);
-    const momentHeight = useSharedValue(500);
-
-    async function mostrarGambiarra() {
-        setMostrar(true)
-    }
+    const momentHeight = useSharedValue(0);
+    const [estilo, setEstilo] = useState(styles.desaparece);
 
     async function apertarBotao() {
         if (momentHeight.value == minHeight.value) {
             momentHeight.value = 500
-            setMostrar(true)
+            setEstilo(styles.aparece)
             return
         } else {
-            setMostrar(false)
+            setEstilo(styles.desaparece)
             momentHeight.value = 0
             return
         }
@@ -95,6 +92,8 @@ export default function Explorar({ navigation }: any) {
         };
     });
 
+    
+
     return (
         <ScrollView p={5}>
             <Botao onPress={() => apertarBotao()}
@@ -102,7 +101,7 @@ export default function Explorar({ navigation }: any) {
 
             <Animated.View
                 style={[{ width: '100%', height: 0, backgroundColor: '#dfdfe6' }, style]} >
-                {mostrar && <>
+                <VStack style={estilo}>
                     <VStack>
                         <FormControl alignItems='center' mt={5}>
                             <FormControl.Label>Filtro Geral de Pesquisas</FormControl.Label>
@@ -158,7 +157,7 @@ export default function Explorar({ navigation }: any) {
                         }
                         <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
                     </VStack>
-                </>}
+                </VStack>
             </Animated.View>
 
             <VStack p={5}>
