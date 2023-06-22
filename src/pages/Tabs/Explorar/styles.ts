@@ -1,10 +1,16 @@
 import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
-    aparece: {
+    apareceFiltroGeral: {
         opacity: 1
     },
-    desaparece: {
+    desapareceFiltroGeral: {
+        opacity: 0
+    },
+    apareceFiltroNome: {
+        opacity: 1
+    },
+    desapareceFiltroNome: {
         opacity: 0
     }
 })

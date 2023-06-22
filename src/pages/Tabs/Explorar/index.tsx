@@ -1,5 +1,5 @@
 import { ScrollView, VStack, Select, FormControl } from "native-base";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Animated, {
     useSharedValue,
     withTiming,
@@ -20,19 +20,21 @@ import { Titulo } from "../../../components/Titulo";
 import { styles } from "./styles";
 
 export default function Explorar({ navigation }: any) {
-    const [filtro, setFiltro] = useState('')
+    const [filtro, setFiltro] = useState('Exercício')
+
+    const [estilo, setEstilo] = useState(styles.desapareceFiltroGeral);
+    const minHeight = useSharedValue(0);
+    const momentHeight = useSharedValue(0);
 
     const [nome, setNome] = useState('')
-    const [cidade, setCidade] = useState('')
-    const [estado, setEstado] = useState('')
-
-    const [membro, setMembro] = useState('')
-    const [musculo, setMusculo] = useState('')
-
     const [pesquisado, setPesquisado] = useState(false)
 
     const [lista, setLista] = useState(exercicios)
     const [users, setUsers] = useState(usuarios)
+
+    useEffect(() => {
+        filtrarListas();
+    },[])
 
     function selecionarFiltro(filtro: string) {
         setPesquisado(false)
@@ -40,17 +42,20 @@ export default function Explorar({ navigation }: any) {
     }
 
     async function filtrarListas() {
-        if (filtro == 'Exercício' || filtro == 'Alongamento') {
-            setLista(exercicios)
+        if (filtro == 'Exercício') {
             setUsers([])
-            if (membro != '') {
-                setLista(lista.filter(exercicio => exercicio.member.includes(`${membro}`)))
-            }
-            if (musculo != '') {
-                setLista(lista.filter(exercicio => exercicio.muscle.includes(`${musculo}`)))
-            }
             if (nome != '') {
-                setLista(lista.filter(exercicio => exercicio.name.includes(`${nome}`)))
+                if(exercicios.find(exercicio => exercicio.name.includes(`${nome}`)) != undefined) {
+                    setLista(exercicios.filter(exercicio => exercicio.name.includes(`${nome}`)))
+                } else if(exercicios.find(exercicio => exercicio.muscle.includes(`${nome}`)) != undefined) {
+                    setLista(exercicios.filter(exercicio => exercicio.muscle.includes(`${nome}`)))
+                } else if(exercicios.find(exercicio => exercicio.member.includes(`${nome}`)) != undefined) {
+                    setLista(exercicios.filter(exercicio => exercicio.member.includes(`${nome}`)))
+                } else {
+                    setLista(exercicios.filter(exercicio => exercicio.name.includes(`${nome}`)))
+                }
+            } else {
+                setLista(exercicios)
             }
         }
         if (filtro == 'Usuário') {
@@ -64,21 +69,19 @@ export default function Explorar({ navigation }: any) {
     }
 
     async function pesquisar() {
+        if (filtro == '') return
         await filtrarListas();
         apertarBotao();
     }
-    const minHeight = useSharedValue(0);
-    const momentHeight = useSharedValue(0);
-    const [estilo, setEstilo] = useState(styles.desaparece);
 
     async function apertarBotao() {
         if (momentHeight.value == minHeight.value) {
-            momentHeight.value = 500
-            setEstilo(styles.aparece)
+            momentHeight.value = 350
+            setEstilo(styles.apareceFiltroGeral)
             return
         } else {
-            setEstilo(styles.desaparece)
-            momentHeight.value = 0
+            setEstilo(styles.desapareceFiltroGeral)
+            momentHeight.value = 0 
             return
         }
     }
@@ -92,13 +95,12 @@ export default function Explorar({ navigation }: any) {
         };
     });
 
-    
+
 
     return (
         <ScrollView p={5}>
             <Botao onPress={() => apertarBotao()}
                 width='auto' alignSelf='flex-end' mb={5}>Pesquisar</Botao>
-
             <Animated.View
                 style={[{ width: '100%', height: 0, backgroundColor: '#dfdfe6' }, style]} >
                 <VStack style={estilo}>
@@ -109,8 +111,7 @@ export default function Explorar({ navigation }: any) {
                                 placeholder='Selecionar Filtro'
                                 selectedValue={filtro}
                                 width={200}
-                                onValueChange={(itemValue: string) => selecionarFiltro(itemValue)}
-                            >
+                                onValueChange={(itemValue: string) => selecionarFiltro(itemValue)}>
                                 <Select.Item label="Exercícios" value="Exercício" />
                                 <Select.Item label="Alongamentos" value="Alongamento" />
                                 <Select.Item label="Usuários" value="Usuário" />
@@ -118,52 +119,19 @@ export default function Explorar({ navigation }: any) {
                         </FormControl>
                     </VStack>
                     <VStack p={5}>
-                        {(filtro == 'Alongamento' || filtro == 'Exercício') && <>
-                            <InputTexto
-                                placeholder={`Nome do membro corporal`}
-                                label='Membro'
-                                value={membro}
-                                onChangeText={(text) => setMembro(text)}
-                            />
-                            <InputTexto
-                                placeholder={`Nome músculo alvo`}
-                                label='Músculo'
-                                value={musculo}
-                                onChangeText={(text) => setMusculo(text)}
-                            />
-                        </>
-                        }
-                        {
-                            filtro == 'Usuário' && <>
-                                <InputTexto
-                                    placeholder={`Nome da Cidade`}
-                                    label='Cidade'
-                                    value={cidade}
-                                    onChangeText={(text) => setCidade(text)}
-                                />
-                                <InputTexto
-                                    placeholder={`Nome do Estado`}
-                                    label='Estado'
-                                    value={estado}
-                                    onChangeText={(text) => setEstado(text)}
-                                />
-                            </>
-                        }
-                        {filtro != '' && <InputTexto
-                            placeholder={`Nome do ${filtro}`}
-                            label='Nome'
+                        <InputTexto
+                            placeholder={`Digite a pesquisa`}
+                            label='Pesquisar'
                             value={nome}
-                            onChangeText={(text) => setNome(text)} />
-                        }
+                            onChangeText={(text) => setNome(text.trim())} />
                         <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
                     </VStack>
                 </VStack>
             </Animated.View>
 
             <VStack p={5}>
-                {filtro != '' && <VStack>
-                    {(lista.length == 0 && users.length == 0 && pesquisado == true) && <Titulo>Nada encontrado</Titulo>}
-
+                <VStack>
+                    {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
                     {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
                         return (
                             <CardPesquisa
@@ -187,7 +155,6 @@ export default function Explorar({ navigation }: any) {
                         )
                     })}
                 </VStack>
-                }
             </VStack>
         </ScrollView>
     )
