@@ -21,12 +21,12 @@ import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
 import { Titulo } from "../../../components/Titulo";
 import { styles } from "./styles";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import Loading from "../../Loading";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('Exercício')
-    const [carregando, setCarregando] = useState(false);
-    const [carregandoTopo, setCarregandoTopo] = useState(false);
+    const [carregandoTudo, setCarregandoTudo] = useState(true);
 
     const [estilo, setEstilo] = useState(styles.desapareceFiltroGeral);
     const minHeight = useSharedValue(0);
@@ -40,6 +40,9 @@ export default function Explorar({ navigation }: any) {
 
     useEffect(() => {
         filtrarListas();
+        setTimeout(() => {
+            setCarregandoTudo(false);
+        }, 500);
     }, [])
 
     function selecionarFiltro(filtro: string) {
@@ -49,10 +52,10 @@ export default function Explorar({ navigation }: any) {
 
     async function filtrarListas(corta = false) {
         if (corta) {
-            if(filtro == 'Exercício') {
+            if (filtro == 'Exercício') {
                 setLista(exercicios);
             }
-            if(filtro == 'Usuário') {
+            if (filtro == 'Usuário') {
                 setUsers(usuarios)
             }
             return
@@ -84,12 +87,12 @@ export default function Explorar({ navigation }: any) {
     }
 
     function pesquisar() {
-        setCarregando(true);
+        setCarregandoTudo(true);
         setTimeout(() => {
             if (filtro == '') return
             filtrarListas();
             apertarBotao();
-            setCarregando(false);
+            setCarregandoTudo(false);
         }, 500);
     }
 
@@ -116,81 +119,82 @@ export default function Explorar({ navigation }: any) {
 
     function apagarVestigiosFiltro() {
         setNome('')
-        setCarregandoTopo(true);
+        setCarregandoTudo(true);
         setTimeout(() => {
             filtrarListas(true)
-            setCarregandoTopo(false);
+            setEstilo(styles.desapareceFiltroGeral)
+            momentHeight.value = 0
+            setCarregandoTudo(false);
         }, 500);
     }
 
     return (
-        <ScrollView p={5}>
-            <View style={{flexDirection:'row', alignSelf:'flex-end', marginBottom:10, gap:15}}>
-                <Load height={100} width={100} opacity={carregandoTopo ? 1 : 0} />
-                <Button onPress={() => apagarVestigiosFiltro()} style={{backgroundColor:'transparent'}}><Image source={LimparFiltroIMG} w={35} h={35} alt="Limpar Filtro" /></Button>
-                <Button onPress={() => apertarBotao()} style={{backgroundColor:'transparent'}}><Image source={FiltroIMG} w={35} h={35} alt="Filtro" /></Button>
+        <>
+            <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginBottom: 10, gap: 15, padding:5 }}>
+                <Button onPress={() => apagarVestigiosFiltro()} style={{ backgroundColor: 'transparent' }}><Image source={LimparFiltroIMG} w={35} h={35} alt="Limpar Filtro" /></Button>
+                <Button onPress={() => apertarBotao()} style={{ backgroundColor: 'transparent' }}><Image source={FiltroIMG} w={35} h={35} alt="Filtro" /></Button>
             </View>
+            {carregandoTudo ? <Loading /> : <ScrollView p={5}>
+                <Animated.View
+                    style={[{ width: '100%', height: 0, backgroundColor: '#dfdfe6' }, style]} >
+                    <VStack style={estilo}>
+                        <VStack>
+                            <FormControl alignItems='center' mt={5}>
+                                <FormControl.Label>Filtro Geral de Pesquisas</FormControl.Label>
+                                <Select
+                                    placeholder='Selecionar Filtro'
+                                    selectedValue={filtro}
+                                    width={200}
+                                    onValueChange={(itemValue: string) => selecionarFiltro(itemValue)}>
+                                    <Select.Item label="Exercícios" value="Exercício" />
+                                    <Select.Item label="Alongamentos" value="Alongamento" />
+                                    <Select.Item label="Usuários" value="Usuário" />
+                                </Select>
+                            </FormControl>
+                        </VStack>
+                        <VStack p={5}>
+                            <InputTexto
+                                placeholder={`Digite a pesquisa`}
+                                label='Pesquisar'
+                                value={nome}
+                                onChangeText={(text) => setNome(text.trim())} />
 
-            <Animated.View
-                style={[{ width: '100%', height: 0, backgroundColor: '#dfdfe6' }, style]} >
-                <VStack style={estilo}>
+                            <View style={{ alignItems: 'center' }}>
+                                <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
+                            </View>
+                        </VStack>
+                    </VStack>
+                </Animated.View>
+
+                <VStack p={5}>
                     <VStack>
-                        <FormControl alignItems='center' mt={5}>
-                            <FormControl.Label>Filtro Geral de Pesquisas</FormControl.Label>
-                            <Select
-                                placeholder='Selecionar Filtro'
-                                selectedValue={filtro}
-                                width={200}
-                                onValueChange={(itemValue: string) => selecionarFiltro(itemValue)}>
-                                <Select.Item label="Exercícios" value="Exercício" />
-                                <Select.Item label="Alongamentos" value="Alongamento" />
-                                <Select.Item label="Usuários" value="Usuário" />
-                            </Select>
-                        </FormControl>
-                    </VStack>
-                    <VStack p={5}>
-                        <InputTexto
-                            placeholder={`Digite a pesquisa`}
-                            label='Pesquisar'
-                            value={nome}
-                            onChangeText={(text) => setNome(text.trim())} />
+                        {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
 
-                        <View style={{ alignItems: 'center' }}>
-                            <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
-                            <Load height={100} width={100} opacity={carregando ? 1 : 0} />
-                        </View>
+                        {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
+                            return (
+                                <CardPesquisa
+                                    name={exercicio.name}
+                                    key={exercicio.id}
+                                    image={exercicio.image}
+                                    description={exercicio.description}
+                                    action={() => navigation.navigate('Exercicio', { exercicio })} />
+                            )
+                        })}
+
+                        {(filtro == 'Usuário' && pesquisado == true) && users?.map(usuario => {
+                            return (
+                                <CardPesquisa
+                                    name={usuario.name}
+                                    key={usuario.id}
+                                    image={usuario.linkImagem == '' ? (usuario.genero == 'Masculino' ? IconeHomem : IconeMulher) : usuario.linkImagem}
+                                    imageWeb={usuario.linkImagem == '' ? false : true}
+                                    description={usuario.cargo}
+                                    action={() => navigation.navigate('User', { usuario })} />
+                            )
+                        })}
                     </VStack>
                 </VStack>
-            </Animated.View>
-
-            <VStack p={5}>
-                <VStack>
-                    {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
-
-                    {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
-                        return (
-                            <CardPesquisa
-                                name={exercicio.name}
-                                key={exercicio.id}
-                                image={exercicio.image}
-                                description={exercicio.description}
-                                action={() => navigation.navigate('Exercicio', { exercicio })} />
-                        )
-                    })}
-
-                    {(filtro == 'Usuário' && pesquisado == true) && users?.map(usuario => {
-                        return (
-                            <CardPesquisa
-                                name={usuario.name}
-                                key={usuario.id}
-                                image={usuario.linkImagem == '' ? (usuario.genero == 'Masculino' ? IconeHomem : IconeMulher) : usuario.linkImagem}
-                                imageWeb={usuario.linkImagem == '' ? false : true}
-                                description={usuario.cargo}
-                                action={() => navigation.navigate('User', { usuario })} />
-                        )
-                    })}
-                </VStack>
-            </VStack>
-        </ScrollView>
+            </ScrollView>}
+        </>
     )
 }
