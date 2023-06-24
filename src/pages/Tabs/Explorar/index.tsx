@@ -1,4 +1,4 @@
-import { ScrollView, VStack, Select, FormControl, View } from "native-base";
+import { ScrollView, VStack, Select, FormControl, Image, Button } from "native-base";
 import { useEffect, useState } from 'react';
 import Animated, {
     useSharedValue,
@@ -14,15 +14,19 @@ import CardPesquisa from "../../../components/CardPesquisa";
 import IconeHomem from '../../../assets/homem.png';
 import IconeMulher from '../../../assets/mulher.png';
 import Load from "../../../components/Load";
+import FiltroIMG from './assets/filtro.png';
+import LimparFiltroIMG from './assets/filtro-limpo.png';
 
 import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
 import { Titulo } from "../../../components/Titulo";
 import { styles } from "./styles";
+import { View, Text } from "react-native";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('Exercício')
     const [carregando, setCarregando] = useState(false);
+    const [carregandoTopo, setCarregandoTopo] = useState(false);
 
     const [estilo, setEstilo] = useState(styles.desapareceFiltroGeral);
     const minHeight = useSharedValue(0);
@@ -31,7 +35,7 @@ export default function Explorar({ navigation }: any) {
     const [nome, setNome] = useState('')
     const [pesquisado, setPesquisado] = useState(false)
 
-    const [lista, setLista] = useState(exercicios)
+    const [lista, setLista] = useState(exercicios);
     const [users, setUsers] = useState(usuarios)
 
     useEffect(() => {
@@ -43,21 +47,31 @@ export default function Explorar({ navigation }: any) {
         setFiltro(filtro)
     }
 
-    async function filtrarListas() {
+    async function filtrarListas(corta = false) {
+        if (corta) {
+            if(filtro == 'Exercício') {
+                setLista(exercicios);
+            }
+            if(filtro == 'Usuário') {
+                setUsers(usuarios)
+            }
+            return
+        }
+
         if (filtro == 'Exercício') {
             setUsers([])
-            if (nome != '') {
-                if (exercicios.find(exercicio => exercicio.name.includes(`${nome}`)) != undefined) {
-                    setLista(exercicios.filter(exercicio => exercicio.name.includes(`${nome}`)))
-                } else if (exercicios.find(exercicio => exercicio.muscle.includes(`${nome}`)) != undefined) {
-                    setLista(exercicios.filter(exercicio => exercicio.muscle.includes(`${nome}`)))
-                } else if (exercicios.find(exercicio => exercicio.member.includes(`${nome}`)) != undefined) {
-                    setLista(exercicios.filter(exercicio => exercicio.member.includes(`${nome}`)))
+            if (nome !== '' && Array.isArray(lista) && Array.isArray(exercicios)) {
+                if (exercicios.find(exercicio => exercicio.name.includes(nome)) !== undefined) {
+                    setLista(exercicios.filter(exercicio => exercicio.name.includes(nome)));
+                } else if (exercicios.find(exercicio => exercicio.muscle.includes(nome)) !== undefined) {
+                    setLista(exercicios.filter(exercicio => exercicio.muscle.includes(nome)));
+                } else if (exercicios.find(exercicio => exercicio.member.includes(nome)) !== undefined) {
+                    setLista(exercicios.filter(exercicio => exercicio.member.includes(nome)));
                 } else {
-                    setLista([])
+                    setLista([]);
                 }
             } else {
-                setLista(exercicios)
+                setLista(exercicios);
             }
         } if (filtro == 'Usuário') {
             setUsers(usuarios)
@@ -100,10 +114,23 @@ export default function Explorar({ navigation }: any) {
         };
     });
 
+    function apagarVestigiosFiltro() {
+        setNome('')
+        setCarregandoTopo(true);
+        setTimeout(() => {
+            filtrarListas(true)
+            setCarregandoTopo(false);
+        }, 500);
+    }
+
     return (
         <ScrollView p={5}>
-            <Botao onPress={() => apertarBotao()}
-                width='auto' alignSelf='flex-end' mb={5}>Pesquisar</Botao>
+            <View style={{flexDirection:'row', alignSelf:'flex-end', marginBottom:10, gap:15}}>
+                <Load height={100} width={100} opacity={carregandoTopo ? 1 : 0} />
+                <Button onPress={() => apagarVestigiosFiltro()} style={{backgroundColor:'transparent'}}><Image source={LimparFiltroIMG} w={35} h={35} alt="Limpar Filtro" /></Button>
+                <Button onPress={() => apertarBotao()} style={{backgroundColor:'transparent'}}><Image source={FiltroIMG} w={35} h={35} alt="Filtro" /></Button>
+            </View>
+
             <Animated.View
                 style={[{ width: '100%', height: 0, backgroundColor: '#dfdfe6' }, style]} >
                 <VStack style={estilo}>
@@ -127,9 +154,10 @@ export default function Explorar({ navigation }: any) {
                             label='Pesquisar'
                             value={nome}
                             onChangeText={(text) => setNome(text.trim())} />
-                        <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
-                        <View style={{alignItems:'center', opacity: carregando ? 1 : 0}}>
-                            <Load height={100} width={100} />
+
+                        <View style={{ alignItems: 'center' }}>
+                            <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
+                            <Load height={100} width={100} opacity={carregando ? 1 : 0} />
                         </View>
                     </VStack>
                 </VStack>
