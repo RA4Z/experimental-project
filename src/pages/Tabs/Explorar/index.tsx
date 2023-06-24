@@ -1,5 +1,5 @@
 import { ScrollView, VStack, Select, FormControl, Image, Button } from "native-base";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Animated, {
     useSharedValue,
     withTiming,
@@ -13,7 +13,6 @@ import CardPesquisa from "../../../components/CardPesquisa";
 
 import IconeHomem from '../../../assets/homem.png';
 import IconeMulher from '../../../assets/mulher.png';
-import Load from "../../../components/Load";
 import FiltroIMG from './assets/filtro.png';
 import LimparFiltroIMG from './assets/filtro-limpo.png';
 
@@ -98,7 +97,7 @@ export default function Explorar({ navigation }: any) {
 
     function apertarBotao() {
         if (momentHeight.value == minHeight.value) {
-            momentHeight.value = 375
+            momentHeight.value = 325
             setEstilo(styles.apareceFiltroGeral)
             return
         } else {
@@ -128,13 +127,14 @@ export default function Explorar({ navigation }: any) {
         }, 500);
     }
 
+    const scrollRef = useRef();
     return (
         <>
             <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginBottom: 10, gap: 15, padding:5 }}>
                 <Button onPress={() => apagarVestigiosFiltro()} style={{ backgroundColor: 'transparent' }}><Image source={LimparFiltroIMG} w={35} h={35} alt="Limpar Filtro" /></Button>
                 <Button onPress={() => apertarBotao()} style={{ backgroundColor: 'transparent' }}><Image source={FiltroIMG} w={35} h={35} alt="Filtro" /></Button>
             </View>
-            {carregandoTudo ? <Loading /> : <ScrollView p={5}>
+            {carregandoTudo ? <Loading /> : <VStack p={5}>
                 <Animated.View
                     style={[{ width: '100%', height: 0, backgroundColor: '#dfdfe6' }, style]} >
                     <VStack style={estilo}>
@@ -166,7 +166,7 @@ export default function Explorar({ navigation }: any) {
                     </VStack>
                 </Animated.View>
 
-                <VStack p={5}>
+                <ScrollView p={5} mb={60}>
                     <VStack>
                         {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
 
@@ -194,8 +194,8 @@ export default function Explorar({ navigation }: any) {
                             )
                         })}
                     </VStack>
-                </VStack>
-            </ScrollView>}
+                </ScrollView>
+            </VStack>}
         </>
     )
 }
