@@ -1,4 +1,4 @@
-import { ScrollView, VStack, Select, FormControl } from "native-base";
+import { ScrollView, VStack, Select, FormControl, View } from "native-base";
 import { useEffect, useState } from 'react';
 import Animated, {
     useSharedValue,
@@ -13,6 +13,7 @@ import CardPesquisa from "../../../components/CardPesquisa";
 
 import IconeHomem from '../../../assets/homem.png';
 import IconeMulher from '../../../assets/mulher.png';
+import Load from "../../../components/Load";
 
 import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
@@ -21,6 +22,7 @@ import { styles } from "./styles";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('Exercício')
+    const [carregando, setCarregando] = useState(false);
 
     const [estilo, setEstilo] = useState(styles.desapareceFiltroGeral);
     const minHeight = useSharedValue(0);
@@ -34,7 +36,7 @@ export default function Explorar({ navigation }: any) {
 
     useEffect(() => {
         filtrarListas();
-    },[])
+    }, [])
 
     function selecionarFiltro(filtro: string) {
         setPesquisado(false)
@@ -45,11 +47,11 @@ export default function Explorar({ navigation }: any) {
         if (filtro == 'Exercício') {
             setUsers([])
             if (nome != '') {
-                if(exercicios.find(exercicio => exercicio.name.includes(`${nome}`)) != undefined) {
+                if (exercicios.find(exercicio => exercicio.name.includes(`${nome}`)) != undefined) {
                     setLista(exercicios.filter(exercicio => exercicio.name.includes(`${nome}`)))
-                } else if(exercicios.find(exercicio => exercicio.muscle.includes(`${nome}`)) != undefined) {
+                } else if (exercicios.find(exercicio => exercicio.muscle.includes(`${nome}`)) != undefined) {
                     setLista(exercicios.filter(exercicio => exercicio.muscle.includes(`${nome}`)))
-                } else if(exercicios.find(exercicio => exercicio.member.includes(`${nome}`)) != undefined) {
+                } else if (exercicios.find(exercicio => exercicio.member.includes(`${nome}`)) != undefined) {
                     setLista(exercicios.filter(exercicio => exercicio.member.includes(`${nome}`)))
                 } else {
                     setLista([])
@@ -57,7 +59,7 @@ export default function Explorar({ navigation }: any) {
             } else {
                 setLista(exercicios)
             }
-        }if (filtro == 'Usuário') {
+        } if (filtro == 'Usuário') {
             setUsers(usuarios)
             setLista([])
             if (nome != '') {
@@ -67,20 +69,24 @@ export default function Explorar({ navigation }: any) {
         setPesquisado(true)
     }
 
-    async function pesquisar() {
-        if (filtro == '') return
-        await filtrarListas();
-        apertarBotao();
+    function pesquisar() {
+        setCarregando(true);
+        setTimeout(() => {
+            if (filtro == '') return
+            filtrarListas();
+            apertarBotao();
+            setCarregando(false);
+        }, 500);
     }
 
-    async function apertarBotao() {
+    function apertarBotao() {
         if (momentHeight.value == minHeight.value) {
-            momentHeight.value = 350
+            momentHeight.value = 375
             setEstilo(styles.apareceFiltroGeral)
             return
         } else {
             setEstilo(styles.desapareceFiltroGeral)
-            momentHeight.value = 0 
+            momentHeight.value = 0
             return
         }
     }
@@ -122,6 +128,9 @@ export default function Explorar({ navigation }: any) {
                             value={nome}
                             onChangeText={(text) => setNome(text.trim())} />
                         <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
+                        <View style={{alignItems:'center', opacity: carregando ? 1 : 0}}>
+                            <Load height={100} width={100} />
+                        </View>
                     </VStack>
                 </VStack>
             </Animated.View>
@@ -129,7 +138,7 @@ export default function Explorar({ navigation }: any) {
             <VStack p={5}>
                 <VStack>
                     {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
-                    
+
                     {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
                         return (
                             <CardPesquisa
