@@ -17,7 +17,7 @@ export default function Exercicio({ navigation, route }: any) {
     }, [])
 
     return (
-        <View style={{flex:1, justifyContent:'center'}}>
+        <View style={{flex:1}}>
             {tempo ? <ScrollView>
                 <Cabecalho texto={item.name} navigation={navigation} />
                 <VStack alignItems='center' p={5}>
