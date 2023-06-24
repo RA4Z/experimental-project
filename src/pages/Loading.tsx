@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native"
 export default function Loading() {
     return (
         <View style={styles.geral}>
-            <Load height={150} width={150}  />
+            <Load height={150} width={150} opacity={1} />
         </View>
     )
 }

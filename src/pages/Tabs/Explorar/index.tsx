@@ -186,6 +186,7 @@ export default function Explorar({ navigation }: any) {
                                 <CardPesquisa
                                     name={usuario.name}
                                     key={usuario.id}
+                                    premium={usuario.premium}
                                     image={usuario.linkImagem == '' ? (usuario.genero == 'Masculino' ? IconeHomem : IconeMulher) : usuario.linkImagem}
                                     imageWeb={usuario.linkImagem == '' ? false : true}
                                     description={usuario.cargo}
