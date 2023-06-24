@@ -26,8 +26,6 @@ export default function CardPesquisa({action, ...rest}: CardProps) {
                     <Avatar mt={5} w={100} h={100} source={{ uri: `${rest.image}` }} /> :
                     <Image source={rest.image} mt={5} w={100} h={100} alt="Exercícios" /> 
                     }
-                    
-
                     <Titulo mt={0}>{rest.name}</Titulo>
                     {mostrarDescricao && <Text>{rest.description}</Text>}
                 </Box>

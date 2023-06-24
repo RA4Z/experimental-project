@@ -52,13 +52,12 @@ export default function Explorar({ navigation }: any) {
                 } else if(exercicios.find(exercicio => exercicio.member.includes(`${nome}`)) != undefined) {
                     setLista(exercicios.filter(exercicio => exercicio.member.includes(`${nome}`)))
                 } else {
-                    setLista(exercicios.filter(exercicio => exercicio.name.includes(`${nome}`)))
+                    setLista([])
                 }
             } else {
                 setLista(exercicios)
             }
-        }
-        if (filtro == 'Usuário') {
+        }if (filtro == 'Usuário') {
             setUsers(usuarios)
             setLista([])
             if (nome != '') {
@@ -95,8 +94,6 @@ export default function Explorar({ navigation }: any) {
         };
     });
 
-
-
     return (
         <ScrollView p={5}>
             <Botao onPress={() => apertarBotao()}
@@ -132,6 +129,7 @@ export default function Explorar({ navigation }: any) {
             <VStack p={5}>
                 <VStack>
                     {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
+                    
                     {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
                         return (
                             <CardPesquisa
