@@ -16,7 +16,7 @@ export function InputTexto({
   onChangeText
 }: InputProps): JSX.Element {
   return (
-    <FormControl mt={3}>
+    <FormControl>
       {label && <FormControl.Label>{label}</FormControl.Label>}
         <Input
           placeholder={placeholder}

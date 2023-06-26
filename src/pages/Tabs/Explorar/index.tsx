@@ -1,35 +1,25 @@
-import { ScrollView, VStack, Select, FormControl, Image, Button } from "native-base";
+import { ScrollView, VStack, Image, Divider } from "native-base";
 import { useEffect, useState, useRef } from 'react';
-import Animated, {
-    useSharedValue,
-    withTiming,
-    useAnimatedStyle,
-    Easing
-} from 'react-native-reanimated';
 
-import { Botao } from "../../../components/Botao";
 import { InputTexto } from "../../../components/InputTexto";
 import CardPesquisa from "../../../components/CardPesquisa";
 
 import IconeHomem from '../../../assets/homem.png';
 import IconeMulher from '../../../assets/mulher.png';
-import FiltroIMG from './assets/filtro.png';
+
+import LupaIMG from './assets/lupa.png';
 import LimparFiltroIMG from './assets/filtro-limpo.png';
 
 import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
 import { Titulo } from "../../../components/Titulo";
-import { styles } from "./styles";
-import { View } from "react-native";
+
+import { Text, TouchableOpacity, View } from "react-native";
 import Loading from "../../Loading";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('Exercício')
     const [carregandoTudo, setCarregandoTudo] = useState(true);
-
-    const [estilo, setEstilo] = useState(styles.desapareceFiltroGeral);
-    const minHeight = useSharedValue(0);
-    const momentHeight = useSharedValue(0);
 
     const [nome, setNome] = useState('')
     const [pesquisado, setPesquisado] = useState(false)
@@ -44,23 +34,17 @@ export default function Explorar({ navigation }: any) {
         }, 500);
     }, [])
 
-    function selecionarFiltro(filtro: string) {
-        setPesquisado(false)
-        setFiltro(filtro)
-    }
-
-    async function filtrarListas(corta = false) {
-        if (corta) {
-            if (filtro == 'Exercício') {
-                setLista(exercicios);
-            }
-            if (filtro == 'Usuário') {
-                setUsers(usuarios)
-            }
-            return
+    async function filtrarListas(corta = false, abaAtual?:string) {
+        setLista(exercicios);
+        setUsers(usuarios)
+        if(abaAtual) {
+            if (abaAtual != filtro) {setFiltro(abaAtual)}
+        } else {
+            abaAtual = filtro
         }
+        if (corta) return
 
-        if (filtro == 'Exercício') {
+        if (abaAtual == 'Exercício') {
             setUsers([])
             if (nome !== '' && Array.isArray(lista) && Array.isArray(exercicios)) {
                 if (exercicios.find(exercicio => exercicio.name.includes(nome)) !== undefined) {
@@ -75,99 +59,70 @@ export default function Explorar({ navigation }: any) {
             } else {
                 setLista(exercicios);
             }
-        } if (filtro == 'Usuário') {
-            setUsers(usuarios)
+        } if (abaAtual == 'Usuário') {
             setLista([])
             if (nome != '') {
-                setUsers(users.filter(usuario => usuario.name.includes(`${nome}`)))
+                setUsers(usuarios.filter(usuario => usuario.name.includes(`${nome}`)))
             }
         }
         setPesquisado(true)
     }
 
-    function pesquisar() {
+    function pesquisar(abaAtual?:string) {
         setCarregandoTudo(true);
         setTimeout(() => {
             if (filtro == '') return
-            filtrarListas();
-            apertarBotao();
+            filtrarListas(false,abaAtual);
             setCarregandoTudo(false);
         }, 500);
     }
-
-    function apertarBotao() {
-        if (momentHeight.value == minHeight.value) {
-            momentHeight.value = 325
-            setEstilo(styles.apareceFiltroGeral)
-            return
-        } else {
-            setEstilo(styles.desapareceFiltroGeral)
-            momentHeight.value = 0
-            return
-        }
-    }
-    const config = {
-        duration: 750,
-        easing: Easing.bezier(0.5, 0.01, 0, 1),
-    };
-    const style = useAnimatedStyle(() => {
-        return {
-            height: withTiming(momentHeight.value, config),
-        };
-    });
 
     function apagarVestigiosFiltro() {
         setNome('')
         setCarregandoTudo(true);
         setTimeout(() => {
             filtrarListas(true)
-            setEstilo(styles.desapareceFiltroGeral)
-            momentHeight.value = 0
             setCarregandoTudo(false);
         }, 500);
     }
 
-    const scrollRef = useRef();
+    function mudarAbaPesquisa(valorAba: string) {
+        setFiltro(valorAba)
+        pesquisar(valorAba)
+    }
+
     return (
         <>
-            <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginBottom: 10, gap: 15, padding:5 }}>
-                <Button onPress={() => apagarVestigiosFiltro()} style={{ backgroundColor: 'transparent' }}><Image source={LimparFiltroIMG} w={35} h={35} alt="Limpar Filtro" /></Button>
-                <Button onPress={() => apertarBotao()} style={{ backgroundColor: 'transparent' }}><Image source={FiltroIMG} w={35} h={35} alt="Filtro" /></Button>
-            </View>
-            {carregandoTudo ? <Loading /> : <VStack p={5}>
-                <Animated.View
-                    style={[{ width: '100%', height: 0, backgroundColor: '#dfdfe6' }, style]} >
-                    <VStack style={estilo}>
-                        <VStack>
-                            <FormControl alignItems='center' mt={5}>
-                                <FormControl.Label>Filtro Geral de Pesquisas</FormControl.Label>
-                                <Select
-                                    placeholder='Selecionar Filtro'
-                                    selectedValue={filtro}
-                                    width={200}
-                                    onValueChange={(itemValue: string) => selecionarFiltro(itemValue)}>
-                                    <Select.Item label="Exercícios" value="Exercício" />
-                                    <Select.Item label="Alongamentos" value="Alongamento" />
-                                    <Select.Item label="Usuários" value="Usuário" />
-                                </Select>
-                            </FormControl>
-                        </VStack>
-                        <VStack p={5}>
+            {carregandoTudo ? <Loading /> :
+                <ScrollView>
+                    <View style={{ flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center', marginBottom: 10, gap: 15, padding: 15 }}>
+                        <View style={{ width: '60%' }}>
                             <InputTexto
                                 placeholder={`Digite a pesquisa`}
                                 label='Pesquisar'
                                 value={nome}
                                 onChangeText={(text) => setNome(text.trim())} />
+                        </View>
+                        <TouchableOpacity onPress={() => pesquisar()} style={{ alignSelf: 'flex-end' }}>
+                            <Image source={LupaIMG} w={50} h={50} alt="Pesquisar" />
+                        </TouchableOpacity>
 
-                            <View style={{ alignItems: 'center' }}>
-                                <Botao onPress={() => pesquisar()}>Pesquisar</Botao>
-                            </View>
-                        </VStack>
-                    </VStack>
-                </Animated.View>
+                        <TouchableOpacity onPress={() => apagarVestigiosFiltro()} style={{ alignSelf: 'flex-end' }}>
+                            <Image source={LimparFiltroIMG} w={50} h={50} alt="Limpar Filtro" />
+                        </TouchableOpacity>
+                    </View>
 
-                <ScrollView p={5} mb={60}>
-                    <VStack>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10, padding: 5 }}>
+                        <TouchableOpacity onPress={() => mudarAbaPesquisa('Exercício')}><Text style={{ color: filtro == 'Exercício' ? '#00BCE5' : 'black' }}>Exercícios</Text></TouchableOpacity>
+                        <Divider style={{ width: 1, height: 30 }} />
+                        <TouchableOpacity onPress={() => mudarAbaPesquisa('Alongamento')}><Text style={{ color: filtro == 'Alongamento' ? '#00BCE5' : 'black' }}>Alongamentos</Text></TouchableOpacity>
+                        <Divider style={{ width: 1, height: 30 }} />
+                        <TouchableOpacity onPress={() => mudarAbaPesquisa('Usuário')}><Text style={{ color: filtro == 'Usuário' ? '#00BCE5' : 'black' }}>Usuários</Text></TouchableOpacity>
+                    </View>
+
+                    <Divider mt={5} />
+
+                    <VStack p={5}>
                         {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
 
                         {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
@@ -194,8 +149,7 @@ export default function Explorar({ navigation }: any) {
                             )
                         })}
                     </VStack>
-                </ScrollView>
-            </VStack>}
+                </ScrollView>}
         </>
     )
 }
