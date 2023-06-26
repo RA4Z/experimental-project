@@ -34,45 +34,39 @@ export default function Explorar({ navigation }: any) {
         }, 500);
     }, [])
 
-    async function filtrarListas(corta = false, abaAtual?:string) {
+    async function filtrarListas(corta = false, abaAtual?: string) {
         setLista(exercicios);
         setUsers(usuarios)
-        if(abaAtual) {
-            if (abaAtual != filtro) {setFiltro(abaAtual)}
+        if (abaAtual) {
+            if (abaAtual != filtro) { setFiltro(abaAtual) }
         } else {
             abaAtual = filtro
         }
         if (corta) return
 
-        if (abaAtual == 'Exercício') {
-            setUsers([])
-            if (nome !== '' && Array.isArray(lista) && Array.isArray(exercicios)) {
-                if (exercicios.find(exercicio => exercicio.name.includes(nome)) !== undefined) {
-                    setLista(exercicios.filter(exercicio => exercicio.name.includes(nome)));
-                } else if (exercicios.find(exercicio => exercicio.muscle.includes(nome)) !== undefined) {
-                    setLista(exercicios.filter(exercicio => exercicio.muscle.includes(nome)));
-                } else if (exercicios.find(exercicio => exercicio.member.includes(nome)) !== undefined) {
-                    setLista(exercicios.filter(exercicio => exercicio.member.includes(nome)));
-                } else {
-                    setLista([]);
-                }
-            } else {
-                setLista(exercicios);
-            }
-        } if (abaAtual == 'Usuário') {
-            setLista([])
-            if (nome != '') {
-                setUsers(usuarios.filter(usuario => usuario.name.includes(`${nome}`)))
-            }
+        if (nome !== '') {
+            // Filtro para os usuários
+            setUsers(usuarios.filter(usuario => usuario.name.includes(nome)))
+
+            // Filtro para os exercícios
+            if (exercicios.find(exercicio => exercicio.name.includes(nome)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.name.includes(nome)));
+            } else if (exercicios.find(exercicio => exercicio.muscle.includes(nome)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.muscle.includes(nome)));
+            } else if (exercicios.find(exercicio => exercicio.member.includes(nome)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.member.includes(nome)));
+            } else setLista([])
         }
+        if(abaAtual == 'Exercício') setUsers([])
+        if(abaAtual == 'Usuário') setLista([])
         setPesquisado(true)
     }
 
-    function pesquisar(abaAtual?:string) {
+    function pesquisar(abaAtual?: string) {
         setCarregandoTudo(true);
         setTimeout(() => {
             if (filtro == '') return
-            filtrarListas(false,abaAtual);
+            filtrarListas(false, abaAtual);
             setCarregandoTudo(false);
         }, 500);
     }
