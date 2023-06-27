@@ -42,18 +42,20 @@ export default function Explorar({ navigation }: any) {
             abaAtual = filtro
         }
         if (corta) return
-
-        if (pesquisado !== '') {
+        const procurado = pesquisado.toLowerCase()
+        if (procurado !== '') {
             // Filtro para os usuários
-            setUsers(usuarios.filter(usuario => usuario.name.includes(pesquisado)))
+            setUsers(usuarios.filter(usuario => usuario.name.includes(procurado)))
 
             // Filtro para os exercícios
-            if (exercicios.find(exercicio => exercicio.name.includes(pesquisado)) !== undefined) {
-                setLista(exercicios.filter(exercicio => exercicio.name.includes(pesquisado)));
-            } else if (exercicios.find(exercicio => exercicio.muscle.includes(pesquisado)) !== undefined) {
-                setLista(exercicios.filter(exercicio => exercicio.muscle.includes(pesquisado)));
-            } else if (exercicios.find(exercicio => exercicio.member.includes(pesquisado)) !== undefined) {
-                setLista(exercicios.filter(exercicio => exercicio.member.includes(pesquisado)));
+            if (exercicios.find(exercicio => exercicio.name.toLowerCase().includes(procurado)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.name.toLowerCase().includes(procurado)));
+            
+            } else if (exercicios.find(exercicio => exercicio.muscle.toLowerCase().includes(procurado)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.muscle.toLowerCase().includes(procurado)));
+            
+            } else if (exercicios.find(exercicio => exercicio.member.toLowerCase().includes(procurado)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.member.toLowerCase().includes(procurado)));
             } else setLista([])
         }
     }
