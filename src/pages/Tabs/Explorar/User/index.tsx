@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { useEffect, useState } from "react";
 
 import IconeMulher from '../../../../assets/mulher.png';
@@ -10,15 +10,17 @@ import Loading from "../../../Loading";
 import { Avatar, Divider, Image, ScrollView } from "native-base";
 import { Botao } from "../../../../components/Botao";
 import OpcoesMenu from "./components/OpcoesMenu";
+import CardOpcoes from "./components/CardOpcoes";
 
 export default function User({ navigation, route }: any) {
     const [carregandoTudo, setCarregandoTudo] = useState(true);
-    const [aba, setAba] = useState('Perfil')
+    const [aba, setAba] = useState('Perfil');
+
     const item = route?.params?.usuario
 
-    const receberValorAba = (childdata:string) => {
+    const receberValorAba = (childdata: string) => {
         setAba(childdata);
-      }
+    }
 
     useEffect(() => {
         setTimeout(() => {
@@ -26,7 +28,6 @@ export default function User({ navigation, route }: any) {
         }, 500);
     }, [])
 
-    console.log(aba)
     return (
         <>
             {carregandoTudo ? <Loading /> :
@@ -52,6 +53,8 @@ export default function User({ navigation, route }: any) {
                     <Divider mt={5} />
 
                     <OpcoesMenu cargo={item.cargo} onEnviarValor={receberValorAba} />
+                    
+                    <CardOpcoes abaAtual={aba} />
 
                 </ScrollView>
             }
