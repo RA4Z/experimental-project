@@ -21,8 +21,7 @@ export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('Exercício')
     const [carregandoTudo, setCarregandoTudo] = useState(true);
 
-    const [nome, setNome] = useState('')
-    const [pesquisado, setPesquisado] = useState(false)
+    const [pesquisado, setPesquisado] = useState('')
 
     const [lista, setLista] = useState(exercicios);
     const [users, setUsers] = useState(usuarios)
@@ -31,7 +30,7 @@ export default function Explorar({ navigation }: any) {
         filtrarListas();
         setTimeout(() => {
             setCarregandoTudo(false);
-        }, 500);
+        }, 100);
     }, [])
 
     async function filtrarListas(corta = false, abaAtual?: string) {
@@ -44,22 +43,19 @@ export default function Explorar({ navigation }: any) {
         }
         if (corta) return
 
-        if (nome !== '') {
+        if (pesquisado !== '') {
             // Filtro para os usuários
-            setUsers(usuarios.filter(usuario => usuario.name.includes(nome)))
+            setUsers(usuarios.filter(usuario => usuario.name.includes(pesquisado)))
 
             // Filtro para os exercícios
-            if (exercicios.find(exercicio => exercicio.name.includes(nome)) !== undefined) {
-                setLista(exercicios.filter(exercicio => exercicio.name.includes(nome)));
-            } else if (exercicios.find(exercicio => exercicio.muscle.includes(nome)) !== undefined) {
-                setLista(exercicios.filter(exercicio => exercicio.muscle.includes(nome)));
-            } else if (exercicios.find(exercicio => exercicio.member.includes(nome)) !== undefined) {
-                setLista(exercicios.filter(exercicio => exercicio.member.includes(nome)));
+            if (exercicios.find(exercicio => exercicio.name.includes(pesquisado)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.name.includes(pesquisado)));
+            } else if (exercicios.find(exercicio => exercicio.muscle.includes(pesquisado)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.muscle.includes(pesquisado)));
+            } else if (exercicios.find(exercicio => exercicio.member.includes(pesquisado)) !== undefined) {
+                setLista(exercicios.filter(exercicio => exercicio.member.includes(pesquisado)));
             } else setLista([])
         }
-        if(abaAtual == 'Exercício') setUsers([])
-        if(abaAtual == 'Usuário') setLista([])
-        setPesquisado(true)
     }
 
     function pesquisar(abaAtual?: string) {
@@ -68,21 +64,16 @@ export default function Explorar({ navigation }: any) {
             if (filtro == '') return
             filtrarListas(false, abaAtual);
             setCarregandoTudo(false);
-        }, 500);
+        }, 100);
     }
 
     function apagarVestigiosFiltro() {
-        setNome('')
+        setPesquisado('')
         setCarregandoTudo(true);
         setTimeout(() => {
             filtrarListas(true)
             setCarregandoTudo(false);
-        }, 500);
-    }
-
-    function mudarAbaPesquisa(valorAba: string) {
-        setFiltro(valorAba)
-        pesquisar(valorAba)
+        }, 100);
     }
 
     return (
@@ -94,8 +85,8 @@ export default function Explorar({ navigation }: any) {
                             <InputTexto
                                 placeholder={`Digite a pesquisa`}
                                 label='Pesquisar'
-                                value={nome}
-                                onChangeText={(text) => setNome(text.trim())} />
+                                value={pesquisado}
+                                onChangeText={(text) => setPesquisado(text.trim())} />
                         </View>
                         <TouchableOpacity onPress={() => pesquisar()} style={{ alignSelf: 'flex-end' }}>
                             <Image source={LupaIMG} w={50} h={50} alt="Pesquisar" />
@@ -107,19 +98,20 @@ export default function Explorar({ navigation }: any) {
                     </View>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10, padding: 5 }}>
-                        <TouchableOpacity onPress={() => mudarAbaPesquisa('Exercício')}><Text style={{ color: filtro == 'Exercício' ? '#00BCE5' : 'black' }}>Exercícios</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={() => setFiltro('Exercício')}><Text style={{ color: filtro == 'Exercício' ? '#00BCE5' : 'black' }}>Exercícios</Text></TouchableOpacity>
                         <Divider style={{ width: 1, height: 30 }} />
-                        <TouchableOpacity onPress={() => mudarAbaPesquisa('Alongamento')}><Text style={{ color: filtro == 'Alongamento' ? '#00BCE5' : 'black' }}>Alongamentos</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={() => setFiltro('Alongamento')}><Text style={{ color: filtro == 'Alongamento' ? '#00BCE5' : 'black' }}>Alongamentos</Text></TouchableOpacity>
                         <Divider style={{ width: 1, height: 30 }} />
-                        <TouchableOpacity onPress={() => mudarAbaPesquisa('Usuário')}><Text style={{ color: filtro == 'Usuário' ? '#00BCE5' : 'black' }}>Usuários</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={() => setFiltro('Usuário')}><Text style={{ color: filtro == 'Usuário' ? '#00BCE5' : 'black' }}>Usuários</Text></TouchableOpacity>
                     </View>
 
                     <Divider mt={5} />
 
                     <VStack p={5}>
-                        {(lista.length == 0 && users.length == 0 && pesquisado == true && filtro != '') && <Titulo>Nada encontrado</Titulo>}
+                        {(lista.length == 0 && filtro == 'Exercício') && <Titulo>Nada encontrado</Titulo>}
+                        {(users.length == 0 && filtro == 'Usuário') && <Titulo>Nada encontrado</Titulo>}
 
-                        {(filtro == 'Exercício' && pesquisado == true) && lista?.map(exercicio => {
+                        {(filtro == 'Exercício') && lista?.map(exercicio => {
                             return (
                                 <CardPesquisa
                                     name={exercicio.name}
@@ -130,7 +122,7 @@ export default function Explorar({ navigation }: any) {
                             )
                         })}
 
-                        {(filtro == 'Usuário' && pesquisado == true) && users?.map(usuario => {
+                        {(filtro == 'Usuário') && users?.map(usuario => {
                             return (
                                 <CardPesquisa
                                     name={usuario.name}
