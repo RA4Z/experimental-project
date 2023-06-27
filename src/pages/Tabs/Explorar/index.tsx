@@ -1,5 +1,5 @@
 import { ScrollView, VStack, Image, Divider } from "native-base";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 import { InputTexto } from "../../../components/InputTexto";
 import CardPesquisa from "../../../components/CardPesquisa";

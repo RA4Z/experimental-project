@@ -6,9 +6,10 @@ interface ButtonProps extends IButtonProps {
     autoSize?: boolean;
     color?: string;
     marginTop?: number
+    fontSize?: number
   }
 
-  export function Botao({ children, autoSize = false, color, marginTop, ...rest }: ButtonProps){
+  export function Botao({ children, autoSize = false, color, fontSize, marginTop, ...rest }: ButtonProps){
 
     return (
       <Button
@@ -16,7 +17,7 @@ interface ButtonProps extends IButtonProps {
         bg={color || 'blue.800'}
         mt={marginTop || 10}
         borderRadius="lg"
-        _text={{ color: 'white' }}
+        _text={{ color: 'white', fontSize: fontSize  }}
         {...rest}
       >
         {children}
