@@ -7,6 +7,12 @@ const usuarios = [
         cargo: 'Professor',
         estado: 'Santa Catarina',
         cidade: 'Schroeder',
+        pais: 'Brasil',
+        imcAtual: 26.9,
+        seguindo: 24,
+        seguidores: 200,
+        entrada: '27/06/2023',
+        nascimento: '31/07/2003',
         premium: true
     },
     {
@@ -16,7 +22,13 @@ const usuarios = [
         linkImagem: '',
         cargo: 'Aluno',
         estado: 'Santa Catarina',
-        cidade: 'Schroeder',
+        cidade: 'Itajaí',
+        pais: 'Argentina',
+        imcAtual: 22.9,
+        seguindo: 3,
+        seguidores: 2000,
+        entrada: '26/06/2023',
+        nascimento: '12/08/2002',
         premium: true
     },
     {
@@ -25,8 +37,14 @@ const usuarios = [
         genero: 'Masculino',
         linkImagem: '',
         cargo: 'Aluno',
-        estado: 'Santa Catarina',
-        cidade: 'Schroeder',
+        estado: 'Rio Grande do Sul',
+        cidade: 'Porto Alegre',
+        pais: 'Rússia',
+        imcAtual: 30.9,
+        seguindo: 5,
+        seguidores: 32,
+        entrada: '25/06/2023',
+        nascimento: '25/06/1981',
         premium: false
     },
     {
@@ -36,7 +54,13 @@ const usuarios = [
         linkImagem: '',
         cargo: 'Professor',
         estado: 'Santa Catarina',
-        cidade: 'Schroeder',
+        cidade: 'Jaraguá do Sul',
+        pais: 'EUA',
+        imcAtual: 22.9,
+        seguindo: 254,
+        seguidores: 524,
+        entrada: '28/06/2023',
+        nascimento: '09/08/1981',
         premium: false
     },
   ]

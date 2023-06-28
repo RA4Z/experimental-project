@@ -2,7 +2,6 @@ import BatePapoIMG from '../../assets/bate-papo.png';
 import AvaliarIMG from '../../assets/avalie.png';
 import PropostaIMG from '../../assets/convite.png';
 
-
 const cards = [
     {
         id: 1,
@@ -23,6 +22,20 @@ const cards = [
                 text: 'Enviar proposta',
                 image: PropostaIMG
             }
+        ]
+    },
+    {
+        id: 2,
+        aba: 'Central',
+        info: [
+
+        ]
+    },
+    {
+        id: 3,
+        aba: 'Bio',
+        info: [
+            
         ]
     }
 ]

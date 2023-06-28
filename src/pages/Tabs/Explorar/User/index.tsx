@@ -44,9 +44,9 @@ export default function User({ navigation, route }: any) {
                     </View>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 16 }}>
-                        <Text style={{ fontSize: 17, marginTop: 7, textAlign: 'center' }}>24{'\n'}Seguindo</Text>
+                        <Text style={{ fontSize: 17, marginTop: 7, textAlign: 'center' }}>{item.seguindo}{'\n'}Seguindo</Text>
                         <Text style={{ fontSize: 17 }}>{item.cargo}</Text>
-                        <Text style={{ fontSize: 17, marginTop: 7, textAlign: 'center' }}>200{'\n'}Seguidores</Text>
+                        <Text style={{ fontSize: 17, marginTop: 7, textAlign: 'center' }}>{item.seguidores}{'\n'}Seguidores</Text>
                     </View>
 
                     <Botao color="black" width='auto' alignSelf='center' borderRadius={25} fontSize={20}>Seguir</Botao>
@@ -54,7 +54,7 @@ export default function User({ navigation, route }: any) {
 
                     <OpcoesMenu cargo={item.cargo} onEnviarValor={receberValorAba} />
                     
-                    <CardOpcoes abaAtual={aba} />
+                    <CardOpcoes abaAtual={aba} route={route} />
 
                 </ScrollView>
             }
