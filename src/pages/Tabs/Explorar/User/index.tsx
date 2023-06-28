@@ -17,7 +17,7 @@ export default function User({ navigation, route }: any) {
     const [aba, setAba] = useState('Perfil');
 
     const item = route?.params?.usuario
-
+    
     const receberValorAba = (childdata: string) => {
         setAba(childdata);
     }

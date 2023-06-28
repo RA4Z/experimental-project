@@ -1,4 +1,4 @@
-import { Image } from 'native-base';
+import { Avatar, Image } from 'native-base';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 
@@ -12,24 +12,15 @@ import { cards } from './Cards';
 import CalculoIdadeUsuario from '../../../../../../services/CalculoIdadeUsuario';
 
 export default function CardOpcoes({ abaAtual, route }: any) {
-    const [numeroAba, setNumeroAba] = useState(0);
     const infoNecessarias = route?.params?.usuario;
     const idadeAtualUsuario = CalculoIdadeUsuario(infoNecessarias.nascimento)
 
     const ImagemGenero = infoNecessarias.genero == 'Feminino' ? MulherIMG : HomemIMG;
 
-    useEffect(() => {
-        if (abaAtual == 'Perfil') {
-            setNumeroAba(0)
-        } else if (abaAtual == 'Bio') {
-            setNumeroAba(2);
-        } else setNumeroAba(1)
-    }, [abaAtual])
-
     return (
-        <View style={{ alignItems: 'center', padding: 20, rowGap: 15 }}>
+        <View style={styles.main}>
 
-            {cards[numeroAba]?.info.map(card => (
+            {abaAtual == 'Perfil' && cards[0]?.info.map(card => (
                 <TouchableOpacity style={styles.card}>
                     <View style={styles.card} key={card.id}>
                         <Image source={card.image} style={styles.imagemCard} alt={card.id.toString()} />
@@ -41,14 +32,14 @@ export default function CardOpcoes({ abaAtual, route }: any) {
                 </TouchableOpacity>
             ))}
 
-            {numeroAba == 1 &&
+            {abaAtual == 'AbaCentral' &&
                 <TouchableOpacity style={styles.card}>
                     <View style={styles.card}>
                     </View>
                 </TouchableOpacity>
             }
 
-            {numeroAba == 2 &&
+            {abaAtual == 'Bio' &&
                 <>
                     <TouchableOpacity style={styles.card}>
                         <View style={styles.card}>
@@ -81,6 +72,16 @@ export default function CardOpcoes({ abaAtual, route }: any) {
                             <Image source={EntrouIMG} style={[styles.imagemCard, { opacity: 0 }]} alt='Imagem de Mapa' />
                         </View>
                     </TouchableOpacity>
+                    
+                    {infoNecessarias.personal > 0 && <TouchableOpacity style={styles.card}>
+                        <View style={styles.card}>
+                            <Avatar style={styles.imagemCard} />
+                            <Text style={styles.textos}>
+                                Personal ID: {infoNecessarias.personal}
+                            </Text>
+                            <Avatar style={[styles.imagemCard, { opacity: 0 }]} />
+                        </View>
+                    </TouchableOpacity>}
                 </>
             }
 
@@ -88,6 +89,11 @@ export default function CardOpcoes({ abaAtual, route }: any) {
     )
 }
 const styles = StyleSheet.create({
+    main: {
+        alignItems: 'center',
+        padding: 20,
+        rowGap: 15
+    },
     textos: {
         fontSize: 15,
         textAlign: 'center',

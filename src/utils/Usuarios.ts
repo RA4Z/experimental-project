@@ -2,6 +2,7 @@ const usuarios = [
     {
         id: 1,
         name: 'Robert Aron Zimmermann',
+        email: 'rraz639@gmail.com',
         genero: 'Masculino',
         linkImagem: 'https://github.com/RA4Z.png',
         cargo: 'Professor',
@@ -13,11 +14,13 @@ const usuarios = [
         seguidores: 200,
         entrada: '27/06/2023',
         nascimento: '31/07/2003',
+        personal: 0,
         premium: true
     },
     {
         id: 2,
         name: 'Karoline da Rosa de Morais',
+        email: 'karol@gmail.com',
         genero: 'Feminino',
         linkImagem: '',
         cargo: 'Aluno',
@@ -29,11 +32,13 @@ const usuarios = [
         seguidores: 2000,
         entrada: '26/06/2023',
         nascimento: '12/08/2002',
+        personal: 1,
         premium: true
     },
     {
         id: 3,
         name: 'Marcio Zimmermann',
+        email: 'marcio@gmail.com',
         genero: 'Masculino',
         linkImagem: '',
         cargo: 'Aluno',
@@ -45,11 +50,13 @@ const usuarios = [
         seguidores: 32,
         entrada: '25/06/2023',
         nascimento: '25/06/1981',
+        personal: 4,
         premium: false
     },
     {
         id: 4,
         name: 'Cleuza Liskoski Zimmermann',
+        email: 'cleuza@gmail.com',
         genero: 'Feminino',
         linkImagem: '',
         cargo: 'Professor',
@@ -61,6 +68,7 @@ const usuarios = [
         seguidores: 524,
         entrada: '28/06/2023',
         nascimento: '09/08/1981',
+        personal: 1,
         premium: false
     },
   ]
