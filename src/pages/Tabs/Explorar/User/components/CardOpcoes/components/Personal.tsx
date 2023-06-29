@@ -38,8 +38,8 @@ export default function Personal({ onPress, id, expandir = false }: any) {
                     </View>
 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                        <Text>36 alunos</Text>
-                        <Text>5 estrelas</Text>
+                        <Text>{personal.alunos} alunos</Text>
+                        <Text>{personal.nota} estrelas</Text>
                     </View>
 
                 </View>

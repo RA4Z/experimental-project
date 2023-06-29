@@ -12,9 +12,11 @@ const usuarios = [
         imcAtual: 26.9,
         seguindo: 24,
         seguidores: 200,
+        nota: 2,
         entrada: '27/06/2023',
         nascimento: '31/07/2003',
         personal: 0,
+        alunos: 36,
         premium: true
     },
     {
@@ -26,13 +28,15 @@ const usuarios = [
         cargo: 'Aluno',
         estado: 'Santa Catarina',
         cidade: 'Itajaí',
-        pais: 'Argentina',
+        pais: 'Brasil',
         imcAtual: 22.9,
         seguindo: 3,
         seguidores: 2000,
+        nota: 5,
         entrada: '26/06/2023',
         nascimento: '12/08/2002',
         personal: 1,
+        alunos: 0,
         premium: true
     },
     {
@@ -44,13 +48,15 @@ const usuarios = [
         cargo: 'Aluno',
         estado: 'Rio Grande do Sul',
         cidade: 'Porto Alegre',
-        pais: 'Rússia',
+        pais: 'Brasil',
         imcAtual: 30.9,
         seguindo: 5,
         seguidores: 32,
+        nota: 3,
         entrada: '25/06/2023',
         nascimento: '25/06/1981',
         personal: 4,
+        alunos: 0,
         premium: false
     },
     {
@@ -62,13 +68,15 @@ const usuarios = [
         cargo: 'Professor',
         estado: 'Santa Catarina',
         cidade: 'Jaraguá do Sul',
-        pais: 'EUA',
+        pais: 'Brasil',
         imcAtual: 22.9,
         seguindo: 254,
         seguidores: 524,
+        nota: 4,
         entrada: '28/06/2023',
         nascimento: '09/08/1981',
         personal: 1,
+        alunos: 53,
         premium: false
     },
   ]
