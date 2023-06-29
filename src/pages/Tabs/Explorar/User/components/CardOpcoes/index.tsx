@@ -1,20 +1,20 @@
-import { Avatar, Image } from 'native-base';
+import { Image } from 'native-base';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
 
 import HomemIMG from '../../../../../../assets/homem.png';
 import MulherIMG from '../../../../../../assets/mulher.png';
-import SetaIMG from '../../assets/seta.png';
 
 import MapaIMG from '../../assets/mapa.png';
 import EntrouIMG from '../../assets/cadastro.png';
 
-import { usuarios } from '../../../../../../utils/Usuarios';
 import { cards } from './Cards';
 import CalculoIdadeUsuario from '../../../../../../services/CalculoIdadeUsuario';
 import { styles } from './styles';
 import Personal from './components/Personal';
 
 export default function CardOpcoes({ abaAtual, route }: any) {
+    const [expandido, setExpandido] = useState(false);
     const infoNecessarias = route?.params?.usuario;
 
     const idadeAtualUsuario = CalculoIdadeUsuario(infoNecessarias.nascimento)
@@ -78,7 +78,9 @@ export default function CardOpcoes({ abaAtual, route }: any) {
                     </TouchableOpacity>
 
                     {infoNecessarias.personal > 0 &&
-                        <Personal id={infoNecessarias.personal} />}
+                        <Personal id={infoNecessarias.personal}
+                            expandir={expandido}
+                            onPress={() => setExpandido(!expandido)} />}
                 </>
             }
 
