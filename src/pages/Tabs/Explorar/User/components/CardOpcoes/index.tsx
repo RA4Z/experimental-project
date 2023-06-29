@@ -8,13 +8,14 @@ import MulherIMG from '../../../../../../assets/mulher.png';
 import MapaIMG from '../../assets/mapa.png';
 import EntrouIMG from '../../assets/cadastro.png';
 
+import { usuarios } from '../../../../../../utils/Usuarios';
 import { cards } from './Cards';
 import CalculoIdadeUsuario from '../../../../../../services/CalculoIdadeUsuario';
 
 export default function CardOpcoes({ abaAtual, route }: any) {
     const infoNecessarias = route?.params?.usuario;
-    const idadeAtualUsuario = CalculoIdadeUsuario(infoNecessarias.nascimento)
 
+    const idadeAtualUsuario = CalculoIdadeUsuario(infoNecessarias.nascimento)
     const ImagemGenero = infoNecessarias.genero == 'Feminino' ? MulherIMG : HomemIMG;
 
     return (
@@ -59,29 +60,34 @@ export default function CardOpcoes({ abaAtual, route }: any) {
                             <Text style={styles.textos}>
                                 {infoNecessarias.cidade},{'\n'}{infoNecessarias.estado} - {infoNecessarias.pais}
                             </Text>
-                            <Image source={MapaIMG} style={[styles.imagemCard, { opacity: 0 }]} alt='Imagem de Mapa' />
+                            <Image source={MapaIMG} style={[styles.imagemCard, { opacity: 0 }]} alt='Nada' />
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.card}>
                         <View style={styles.card}>
-                            <Image source={EntrouIMG} style={styles.imagemCard} alt='Imagem de Mapa' />
+                            <Image source={EntrouIMG} style={styles.imagemCard} alt='Imagem de Entrada' />
                             <Text style={styles.textos}>
                                 Entrou em: {infoNecessarias.entrada}
                             </Text>
-                            <Image source={EntrouIMG} style={[styles.imagemCard, { opacity: 0 }]} alt='Imagem de Mapa' />
+                            <Image source={EntrouIMG} style={[styles.imagemCard, { opacity: 0 }]} alt='Nada' />
                         </View>
                     </TouchableOpacity>
-                    
-                    {infoNecessarias.personal > 0 && <TouchableOpacity style={styles.card}>
-                        <View style={styles.card}>
-                            <Avatar style={styles.imagemCard} />
-                            <Text style={styles.textos}>
-                                Personal ID: {infoNecessarias.personal}
-                            </Text>
-                            <Avatar style={[styles.imagemCard, { opacity: 0 }]} />
-                        </View>
-                    </TouchableOpacity>}
+
+                    {infoNecessarias.personal > 0 &&
+                        <TouchableOpacity style={styles.card} key={infoNecessarias.personal}>
+                            <View style={styles.card}>
+                                {usuarios[infoNecessarias.personal - 1].linkImagem != '' ?
+                                    <Avatar style={styles.imagemCard} source={{ uri: `${usuarios[infoNecessarias.personal - 1].linkImagem}` }} />
+                                    :
+                                    <Image source={usuarios[infoNecessarias.personal - 1].genero == 'Feminino' ? MulherIMG : HomemIMG} style={styles.imagemCard} alt='Imagem do Personal' />
+                                }
+                                <Text style={styles.textos}>
+                                    {usuarios[infoNecessarias.personal - 1].name}
+                                </Text>
+                                <Avatar style={[styles.imagemCard, { opacity: 0 }]} />
+                            </View>
+                        </TouchableOpacity>}
                 </>
             }
 
