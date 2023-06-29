@@ -1,9 +1,9 @@
 import { Avatar, Image } from 'native-base';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 import HomemIMG from '../../../../../../assets/homem.png';
 import MulherIMG from '../../../../../../assets/mulher.png';
+import SetaIMG from '../../assets/seta.png';
 
 import MapaIMG from '../../assets/mapa.png';
 import EntrouIMG from '../../assets/cadastro.png';
@@ -11,12 +11,15 @@ import EntrouIMG from '../../assets/cadastro.png';
 import { usuarios } from '../../../../../../utils/Usuarios';
 import { cards } from './Cards';
 import CalculoIdadeUsuario from '../../../../../../services/CalculoIdadeUsuario';
+import { styles } from './styles';
+import Personal from './components/Personal';
 
 export default function CardOpcoes({ abaAtual, route }: any) {
     const infoNecessarias = route?.params?.usuario;
 
     const idadeAtualUsuario = CalculoIdadeUsuario(infoNecessarias.nascimento)
     const ImagemGenero = infoNecessarias.genero == 'Feminino' ? MulherIMG : HomemIMG;
+
 
     return (
         <View style={styles.main}>
@@ -75,53 +78,10 @@ export default function CardOpcoes({ abaAtual, route }: any) {
                     </TouchableOpacity>
 
                     {infoNecessarias.personal > 0 &&
-                        <TouchableOpacity style={styles.card} key={infoNecessarias.personal}>
-                            <View style={styles.card}>
-                                {usuarios[infoNecessarias.personal - 1].linkImagem != '' ?
-                                    <Avatar style={styles.imagemCard} source={{ uri: `${usuarios[infoNecessarias.personal - 1].linkImagem}` }} />
-                                    :
-                                    <Image source={usuarios[infoNecessarias.personal - 1].genero == 'Feminino' ? MulherIMG : HomemIMG} style={styles.imagemCard} alt='Imagem do Personal' />
-                                }
-                                <Text style={styles.textos}>
-                                    {usuarios[infoNecessarias.personal - 1].name}
-                                </Text>
-                                <Avatar style={[styles.imagemCard, { opacity: 0 }]} />
-                            </View>
-                        </TouchableOpacity>}
+                        <Personal id={infoNecessarias.personal} />}
                 </>
             }
 
         </View >
     )
 }
-const styles = StyleSheet.create({
-    main: {
-        alignItems: 'center',
-        padding: 20,
-        rowGap: 15
-    },
-    textos: {
-        fontSize: 15,
-        textAlign: 'center',
-        marginLeft: 5
-    },
-    heading: {
-        fontSize: 15,
-        textAlign: 'center',
-        maxWidth: 150
-    },
-    card: {
-        backgroundColor: 'white',
-        borderRadius: 8,
-        height: 65,
-        padding: 10,
-        width: '100%',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    imagemCard: {
-        height: 65,
-        width: 65,
-    }
-});
