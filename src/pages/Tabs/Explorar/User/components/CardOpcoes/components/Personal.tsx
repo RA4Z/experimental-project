@@ -8,6 +8,7 @@ import SetaIMG from '../../../assets/seta.png';
 import { styles } from "../styles";
 import { usuarios } from "../../../../../../../utils/Usuarios";
 import CalculoIdadeUsuario from "../../../../../../../services/CalculoIdadeUsuario";
+import Estrelas from "./Estrelas";
 
 export default function Personal({ onPress, id, expandir = false }: any) {
     const estilos = estilosSeta(expandir)
@@ -37,9 +38,11 @@ export default function Personal({ onPress, id, expandir = false }: any) {
                         <Text>Entrou em: {personal.entrada}</Text>
                     </View>
 
-                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text>{personal.alunos} alunos</Text>
-                        <Text>{personal.nota} estrelas</Text>
+                        <View style={{flexDirection:'row'}}>
+                            <Estrelas nota={personal.nota} />
+                        </View>
                     </View>
 
                 </View>
