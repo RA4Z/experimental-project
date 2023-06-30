@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 
 import { InputTexto } from "../../../components/InputTexto";
 import CardPesquisa from "../../../components/CardPesquisa";
+import OpcoesMenu from "./components/OpcoesMenu";
 
 import IconeHomem from '../../../assets/homem.png';
 import IconeMulher from '../../../assets/mulher.png';
-
 import LupaIMG from './assets/lupa.png';
 import LimparFiltroIMG from './assets/filtro-limpo.png';
 
@@ -20,8 +20,11 @@ import Loading from "../../Loading";
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('Exercício')
     const [carregandoTudo, setCarregandoTudo] = useState(true);
-
     const [pesquisado, setPesquisado] = useState('')
+
+    const receberValorAba = (childdata: string) => {
+        setFiltro(childdata);
+    }
 
     const [lista, setLista] = useState(exercicios);
     const [users, setUsers] = useState(usuarios)
@@ -99,13 +102,7 @@ export default function Explorar({ navigation }: any) {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 10, padding: 5 }}>
-                        <TouchableOpacity onPress={() => setFiltro('Exercício')}><Text style={{ color: filtro == 'Exercício' ? '#00BCE5' : 'black' }}>Exercícios</Text></TouchableOpacity>
-                        <Divider style={{ width: 1, height: 30 }} />
-                        <TouchableOpacity onPress={() => setFiltro('Alongamento')}><Text style={{ color: filtro == 'Alongamento' ? '#00BCE5' : 'black' }}>Alongamentos</Text></TouchableOpacity>
-                        <Divider style={{ width: 1, height: 30 }} />
-                        <TouchableOpacity onPress={() => setFiltro('Usuário')}><Text style={{ color: filtro == 'Usuário' ? '#00BCE5' : 'black' }}>Usuários</Text></TouchableOpacity>
-                    </View>
+                    <OpcoesMenu filtro={filtro} onEnviarValor={receberValorAba} />
 
                     <Divider mt={5} />
 
