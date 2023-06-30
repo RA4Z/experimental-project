@@ -25,8 +25,8 @@ export default function CardOpcoes({ abaAtual, route }: any) {
         <View style={styles.main}>
 
             {abaAtual == 'Perfil' && cards[0]?.info.map(card => (
-                <TouchableOpacity style={styles.card}>
-                    <View style={styles.card} key={card.id}>
+                <TouchableOpacity style={styles.card} key={card.id}>
+                    <View style={styles.card}>
                         <Image source={card.image} style={styles.imagemCard} alt={card.id.toString()} />
                         <Text style={styles.heading}>
                             {card.text}
