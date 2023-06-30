@@ -51,7 +51,7 @@ export default function User({ navigation, route }: any) {
                     </View>
                     <View style={{alignSelf:'center', rowGap:10}}>
                         <Botao color="black" width='auto' borderRadius={25} fontSize={20}>Seguir</Botao>
-                        <Estrelas nota={Math.ceil(item.nota)} />
+                        <Estrelas nota={item.nota} />
                     </View>
                     <Divider mt={5} />
 

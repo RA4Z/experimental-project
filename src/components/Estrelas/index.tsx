@@ -9,6 +9,7 @@ interface IEstrela {
 }
 
 export default function Estrelas({ nota }: IEstrela) {
+    nota = Math.ceil(nota)
     const listaEstrelas = [];
     for (let i = 0; i < 5; i++) {
         if (i + 1 <= nota) {
