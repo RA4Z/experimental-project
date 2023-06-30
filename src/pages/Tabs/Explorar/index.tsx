@@ -1,21 +1,18 @@
-import { ScrollView, VStack, Image, Divider } from "native-base";
+import { ScrollView, Image, Divider } from "native-base";
 import { useEffect, useState } from 'react';
 
 import { InputTexto } from "../../../components/InputTexto";
-import CardPesquisa from "../../../components/CardPesquisa";
 import OpcoesMenu from "./components/OpcoesMenu";
 
-import IconeHomem from '../../../assets/homem.png';
-import IconeMulher from '../../../assets/mulher.png';
 import LupaIMG from './assets/lupa.png';
 import LimparFiltroIMG from './assets/filtro-limpo.png';
 
 import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
-import { Titulo } from "../../../components/Titulo";
 
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Loading from "../../Loading";
+import Cards from "./components/Cards";
 
 export default function Explorar({ navigation }: any) {
     const [filtro, setFiltro] = useState('Exercício')
@@ -38,7 +35,8 @@ export default function Explorar({ navigation }: any) {
 
     async function filtrarListas(corta = false, abaAtual?: string) {
         setLista(exercicios);
-        setUsers(usuarios)
+        setUsers(usuarios);
+
         if (abaAtual) {
             if (abaAtual != filtro) { setFiltro(abaAtual) }
         } else {
@@ -48,19 +46,20 @@ export default function Explorar({ navigation }: any) {
         const procurado = pesquisado.toLowerCase()
         if (procurado !== '') {
             // Filtro para os usuários
-            setUsers(usuarios.filter(usuario => usuario.name.includes(procurado)))
+            setUsers(usuarios.filter(usuario => usuario.name.toLowerCase().includes(procurado)))
 
             // Filtro para os exercícios
             if (exercicios.find(exercicio => exercicio.name.toLowerCase().includes(procurado)) !== undefined) {
                 setLista(exercicios.filter(exercicio => exercicio.name.toLowerCase().includes(procurado)));
-            
+
             } else if (exercicios.find(exercicio => exercicio.muscle.toLowerCase().includes(procurado)) !== undefined) {
                 setLista(exercicios.filter(exercicio => exercicio.muscle.toLowerCase().includes(procurado)));
-            
+
             } else if (exercicios.find(exercicio => exercicio.member.toLowerCase().includes(procurado)) !== undefined) {
                 setLista(exercicios.filter(exercicio => exercicio.member.toLowerCase().includes(procurado)));
             } else setLista([])
         }
+        console.log(usuarios)
     }
 
     function pesquisar(abaAtual?: string) {
@@ -103,37 +102,9 @@ export default function Explorar({ navigation }: any) {
                     </View>
 
                     <OpcoesMenu filtro={filtro} onEnviarValor={receberValorAba} />
-
                     <Divider mt={5} />
+                    <Cards filtro={filtro} lista={lista} users={users} navigation={navigation} />
 
-                    <VStack p={5}>
-                        {(lista.length == 0 && filtro == 'Exercício') && <Titulo>Nada encontrado</Titulo>}
-                        {(users.length == 0 && filtro == 'Usuário') && <Titulo>Nada encontrado</Titulo>}
-
-                        {(filtro == 'Exercício') && lista?.map(exercicio => {
-                            return (
-                                <CardPesquisa
-                                    name={exercicio.name}
-                                    key={exercicio.id}
-                                    image={exercicio.image}
-                                    description={exercicio.description}
-                                    action={() => navigation.navigate('Exercicio', { exercicio })} />
-                            )
-                        })}
-
-                        {(filtro == 'Usuário') && users?.map(usuario => {
-                            return (
-                                <CardPesquisa
-                                    name={usuario.name}
-                                    key={usuario.id}
-                                    premium={usuario.premium}
-                                    image={usuario.linkImagem == '' ? (usuario.genero == 'Masculino' ? IconeHomem : IconeMulher) : usuario.linkImagem}
-                                    imageWeb={usuario.linkImagem == '' ? false : true}
-                                    description={usuario.cargo}
-                                    action={() => navigation.navigate('User', { usuario })} />
-                            )
-                        })}
-                    </VStack>
                 </ScrollView>}
         </>
     )
