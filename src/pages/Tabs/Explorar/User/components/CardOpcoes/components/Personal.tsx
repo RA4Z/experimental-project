@@ -1,6 +1,5 @@
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Avatar, Image } from 'native-base';
-import { useState } from 'react';
 
 import HomemIMG from '../../../../../../../assets/homem.png';
 import MulherIMG from '../../../../../../../assets/mulher.png';
@@ -8,7 +7,7 @@ import SetaIMG from '../../../assets/seta.png';
 import { styles } from "../styles";
 import { usuarios } from "../../../../../../../utils/Usuarios";
 import CalculoIdadeUsuario from "../../../../../../../services/CalculoIdadeUsuario";
-import Estrelas from "./Estrelas";
+import Estrelas from "../../../../../../../components/Estrelas";
 
 export default function Personal({ onPress, id, expandir = false }: any) {
     const estilos = estilosSeta(expandir)

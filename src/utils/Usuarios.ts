@@ -12,7 +12,7 @@ const usuarios = [
         imcAtual: 26.9,
         seguindo: 24,
         seguidores: 200,
-        nota: 2,
+        nota: 2.5,
         entrada: '27/06/2023',
         nascimento: '31/07/2003',
         personal: 0,

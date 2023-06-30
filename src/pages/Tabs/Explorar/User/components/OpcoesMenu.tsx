@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Divider } from "native-base";
 import { TouchableOpacity, View, Text } from "react-native";
 

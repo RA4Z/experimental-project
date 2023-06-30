@@ -1,23 +1,24 @@
 import { View, StyleSheet } from 'react-native';
 import { Image } from 'native-base';
 
-import EstrelaIMG from '../../../assets/estrela-amarela.png';
-import EstrelaCinzaIMG from '../../../assets/estrelaCinza.png';
+import EstrelaIMG from '../../assets/estrela-amarela.png';
+import EstrelaCinzaIMG from '../../assets/estrela-cinza.png';
 
-export default function Estrelas({ nota }: any) {
-    console.log(nota)
+interface IEstrela {
+    nota:number
+}
+
+export default function Estrelas({ nota }: IEstrela) {
     const listaEstrelas = [];
-    for (let i = 0; i < nota; i++) {
-        listaEstrelas.push(
-            {
-                id: i,
-                imagem: EstrelaIMG
-            }
-            
-        );
-    }
-    if (nota < 5) {
-        for (let i = nota; i < 5; i++) {
+    for (let i = 0; i < 5; i++) {
+        if (i + 1 <= nota) {
+            listaEstrelas.push(
+                {
+                    id: i,
+                    imagem: EstrelaIMG
+                }
+            );
+        } else {
             listaEstrelas.push(
                 {
                     id: i,
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
     estrela: {
         width: 24,
         height: 24,
+
         marginRight: 2
     }
 })

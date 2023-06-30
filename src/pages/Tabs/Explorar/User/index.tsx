@@ -5,6 +5,7 @@ import IconeMulher from '../../../../assets/mulher.png';
 import IconeHomem from '../../../../assets/homem.png';
 import PremiumIMG from '../../../../assets/premium.png'
 
+import Estrelas from "../../../../components/Estrelas";
 import Cabecalho from "../../../../components/Cabecalho";
 import Loading from "../../../Loading";
 import { Avatar, Divider, Image, ScrollView } from "native-base";
@@ -48,12 +49,14 @@ export default function User({ navigation, route }: any) {
                         <Text style={{ fontSize: 17 }}>{item.cargo}</Text>
                         <Text style={{ fontSize: 17, marginTop: 7, textAlign: 'center' }}>{item.seguidores}{'\n'}Seguidores</Text>
                     </View>
-
-                    <Botao color="black" width='auto' alignSelf='center' borderRadius={25} fontSize={20}>Seguir</Botao>
+                    <View style={{alignSelf:'center', rowGap:10}}>
+                        <Botao color="black" width='auto' borderRadius={25} fontSize={20}>Seguir</Botao>
+                        <Estrelas nota={Math.ceil(item.nota)} />
+                    </View>
                     <Divider mt={5} />
 
                     <OpcoesMenu cargo={item.cargo} onEnviarValor={receberValorAba} />
-                    
+
                     <CardOpcoes abaAtual={aba} route={route} />
 
                 </ScrollView>
