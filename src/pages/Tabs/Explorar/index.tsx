@@ -9,6 +9,7 @@ import LimparFiltroIMG from './assets/filtro-limpo.png';
 
 import { exercicios } from "../../../utils/Exercicios";
 import { usuarios } from "../../../utils/Usuarios";
+import { alongamentos } from "../../../utils/Alongamentos";
 
 import { TouchableOpacity, View } from "react-native";
 import Loading from "../../Loading";
@@ -24,6 +25,7 @@ export default function Explorar({ navigation }: any) {
     }
 
     const [lista, setLista] = useState(exercicios);
+    const [listaAlongamento, setListaAlongamento] = useState(alongamentos);
     const [users, setUsers] = useState(usuarios)
 
     useEffect(() => {
@@ -36,6 +38,7 @@ export default function Explorar({ navigation }: any) {
     async function filtrarListas(corta = false, abaAtual?: string) {
         setLista(exercicios);
         setUsers(usuarios);
+        setListaAlongamento(alongamentos);
 
         if (abaAtual) {
             if (abaAtual != filtro) { setFiltro(abaAtual) }
@@ -45,21 +48,29 @@ export default function Explorar({ navigation }: any) {
         if (corta) return
         const procurado = pesquisado.toLowerCase()
         if (procurado !== '') {
+
             // Filtro para os usuários
             setUsers(usuarios.filter(usuario => usuario.name.toLowerCase().includes(procurado)))
 
             // Filtro para os exercícios
             if (exercicios.find(exercicio => exercicio.name.toLowerCase().includes(procurado)) !== undefined) {
                 setLista(exercicios.filter(exercicio => exercicio.name.toLowerCase().includes(procurado)));
-
             } else if (exercicios.find(exercicio => exercicio.muscle.toLowerCase().includes(procurado)) !== undefined) {
                 setLista(exercicios.filter(exercicio => exercicio.muscle.toLowerCase().includes(procurado)));
-
             } else if (exercicios.find(exercicio => exercicio.member.toLowerCase().includes(procurado)) !== undefined) {
                 setLista(exercicios.filter(exercicio => exercicio.member.toLowerCase().includes(procurado)));
             } else setLista([])
+
+            // Filtro para os alongamentos
+            if (alongamentos.find(alongamento => alongamento.name.toLowerCase().includes(procurado)) !== undefined) {
+                setListaAlongamento(alongamentos.filter(alongamento => alongamento.name.toLowerCase().includes(procurado)));
+            } else if (alongamentos.find(alongamento => alongamento.muscle.toLowerCase().includes(procurado)) !== undefined) {
+                setListaAlongamento(alongamentos.filter(alongamento => alongamento.muscle.toLowerCase().includes(procurado)));
+            } else if (alongamentos.find(alongamento => alongamento.member.toLowerCase().includes(procurado)) !== undefined) {
+                setListaAlongamento(alongamentos.filter(alongamento => alongamento.member.toLowerCase().includes(procurado)));
+            } else setListaAlongamento([])
+
         }
-        console.log(usuarios)
     }
 
     function pesquisar(abaAtual?: string) {
@@ -103,7 +114,7 @@ export default function Explorar({ navigation }: any) {
 
                     <OpcoesMenu filtro={filtro} onEnviarValor={receberValorAba} />
                     <Divider mt={5} />
-                    <Cards filtro={filtro} lista={lista} users={users} navigation={navigation} />
+                    <Cards filtro={filtro} exercicios={lista} users={users} alongamentos={listaAlongamento} navigation={navigation} />
 
                 </ScrollView>}
         </>
