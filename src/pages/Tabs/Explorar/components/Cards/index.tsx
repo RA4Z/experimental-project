@@ -43,7 +43,7 @@ export default function Cards({ navigation, exercicios, users, alongamentos, fil
                         key={alongamento.id}
                         image={alongamento.image}
                         description={alongamento.description}
-                        action={() => navigation.navigate('Exercicio', { alongamento })} />
+                        action={() => navigation.navigate('Alongamento', { alongamento })} />
                 )
             })}
 

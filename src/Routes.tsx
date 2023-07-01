@@ -14,6 +14,7 @@ import Configuracoes from './pages/Configuracoes';
 import User from './pages/Tabs/Explorar/User';
 
 import Exercicio from './pages/Tabs/Explorar/Exercicio';
+import Alongamento from './pages/Tabs/Explorar/Alongamento';
 import Recordes from './pages/Tabs/Explorar/Exercicio/Recordes';
 
 export default function Routes() {
@@ -30,6 +31,7 @@ export default function Routes() {
 
                 <Tab.Screen name='Recordes' component={Recordes as React.FC} options={{ headerShown: false }} />
                 <Tab.Screen name='Exercicio' component={Exercicio as React.FC} options={{ headerShown: false }} />
+                <Tab.Screen name='Alongamento' component={Alongamento as React.FC} options={{ headerShown: false }} />
 
                 <Tab.Screen name='Loading' component={Loading as React.FC} options={{ headerShown: false }} />
 
