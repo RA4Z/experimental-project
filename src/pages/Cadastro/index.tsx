@@ -66,7 +66,7 @@ export default function Cadastro({ navigation }: any) {
                                             label={entrada.label}
                                             value={dados[entrada.name]}
                                             secureTextEntry={entrada.secureTextEntry}
-                                            onChangeText={(text) => atualizarDados(entrada.name, text)}
+                                            onChangeText={(text) => atualizarDados(entrada.name, text.trim())}
                                         /> :
                                             <Select
                                                 placeholder={entrada.placeholder}
